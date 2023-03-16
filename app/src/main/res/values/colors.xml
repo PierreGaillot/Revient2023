@@ -7,4 +7,16 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--  Revient Colors  -->
+    <color name="rv_primary_primary">#6929b2</color>
+    <color name="rv_primary_light">#9c58e5</color>
+    <color name="rv_primary_dark">#340081</color>
+    <color name="rv_secondary_secondary">#84ea63</color>
+    <color name="rv_secondary_light">#b9ff94</color>
+    <color name="rv_secondary_dark">#4fb732</color>
+    <color name="rv_txt_light">#f9fff5</color>
+    <color name="rv_txt_dark">#070011</color>
+    <color name="rv_txt_medium">#9c9b9d</color>
+
 </resources>

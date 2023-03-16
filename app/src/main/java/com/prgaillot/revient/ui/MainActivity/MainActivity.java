@@ -1,4 +1,4 @@
-package com.prgaillot.revient.ui;
+package com.prgaillot.revient.ui.MainActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,26 +16,34 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.databinding.ActivityMainBinding;
+import com.prgaillot.revient.domain.models.User;
+import com.prgaillot.revient.utils.Callback;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+    private MainActivityViewModel viewModel;
     private AppBarConfiguration appBarConfiguration;
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
@@ -47,12 +55,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
     );
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         startSignInActivity();
+
 
         com.prgaillot.revient.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -62,6 +72,14 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        fab = binding.getRoot().findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_HomeFragment_to_newStuffFragment);
+            }
+        });
 
     }
 
@@ -80,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        if(id == R.id.action_logout){
+        if (id == R.id.action_logout) {
             signOut();
             startSignInActivity();
             return true;
@@ -103,14 +121,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void createSignInIntent() {
         // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Collections.singletonList(
-                new AuthUI.IdpConfig.GoogleBuilder().build()
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.EmailBuilder().build()
         );
+
 
         // Create and launch sign-in intent
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
+                .setLogo(R.drawable.ic_launcher_rv_foreground)
+                .setTheme(R.style.revientTheme)
+                .setIsSmartLockEnabled(false, true)
                 .build();
         signInLauncher.launch(signInIntent);
     }
@@ -119,13 +142,41 @@ public class MainActivity extends AppCompatActivity {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.logged_as) + user.getDisplayName(), Toast.LENGTH_LONG).show();
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.logged_as) + firebaseUser.getDisplayName(), Toast.LENGTH_LONG).show();
+            User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl(), firebaseUser.getEmail());
+
+            viewModel.userIsRegistered(firebaseUser.getUid(), new Callback<Boolean>() {
+                @Override
+                public void onCallback(Boolean result) {
+                    if(result){
+                        viewModel.getCurrentUserData(new Callback<User>() {
+                            @Override
+                            public void onCallback(User user) {
+                                Log.d(TAG,  user.getDisplayName() + " is already a user.\n uid : " + user.getDisplayName() + "\n email : " +user.getEmail() + "\n friendsUid : " + user.getFriendsUid());
+                                viewModel.getUserFriends(user.getFriendsUid(), new Callback<List<User>>() {
+                                    @Override
+                                    public void onCallback(List<User> friendsList) {
+                                        Log.d(TAG, "friend list : ");
+                                        for (User friend: friendsList    ) {
+                                            Log.d(TAG, "friend : " + friend.getDisplayName());
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        Log.d(TAG, "new user is created : " + user.getDisplayName());
+                        viewModel.createUser(user);
+                    }
+                }
+            });
 
         } else {
             Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
         }
     }
+
     public void signOut() {
         AuthUI.getInstance()
                 .signOut(this)
