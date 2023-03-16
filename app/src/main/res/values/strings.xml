@@ -9,4 +9,10 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="logged_as">you are logged as</string>
+    <string name="error_occurred">An error occurred</string>
+    <string name="logout_message">you are logged out</string>
+    <string name="action_logout">Logout</string>
+
+
 </resources>

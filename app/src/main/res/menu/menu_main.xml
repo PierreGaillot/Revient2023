@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.prgaillot.revient.ui.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:title="@string/action_logout"
+        android:id="@+id/action_logout"
         android:orderInCategory="100"
+        />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="1"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>
