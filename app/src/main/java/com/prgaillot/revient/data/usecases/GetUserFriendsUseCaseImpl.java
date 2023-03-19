@@ -12,7 +12,7 @@ public class GetUserFriendsUseCaseImpl implements GetUserFriendsUseCase {
     UserRepository userRepository = UserRepository.getInstance();
 
     @Override
-    public void getUserFriends(List<String> friendsUid, Callback<List<User>> callback) {
-        userRepository.getUserFriends(friendsUid, callback);
+    public void getUserFriends(String userUid, Callback<List<User>> callback) {
+        userRepository.getUserFriendById(userUid, callback);
     }
 }

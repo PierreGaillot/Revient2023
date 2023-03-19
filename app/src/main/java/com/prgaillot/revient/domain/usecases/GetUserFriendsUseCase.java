@@ -10,6 +10,6 @@ public interface GetUserFriendsUseCase {
 
     GetUserFriendsUseCase instance = new GetUserFriendsUseCaseImpl();
 
-    void getUserFriends(List<String> friendsUid, Callback<List<User>> callback);
+    void getUserFriends(String userUid, Callback<List<User>> callback);
 
 }

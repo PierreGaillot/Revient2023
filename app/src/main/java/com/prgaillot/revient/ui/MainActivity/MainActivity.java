@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.databinding.ActivityMainBinding;
+import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
 import com.prgaillot.revient.utils.Callback;
 
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private MainActivityViewModel viewModel;
     private AppBarConfiguration appBarConfiguration;
+
+    private String userLogId;
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -77,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_HomeFragment_to_newStuffFragment);
+                Bundle newStuffBundle = new Bundle();
+                newStuffBundle.putString("ownerId", userLogId);
+                navController.navigate(R.id.action_HomeFragment_to_newStuffFragment, newStuffBundle);
             }
         });
 
@@ -154,12 +159,14 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onCallback(User user) {
                                 Log.d(TAG,  user.getDisplayName() + " is already a user.\n uid : " + user.getDisplayName() + "\n email : " +user.getEmail() + "\n friendsUid : " + user.getFriendsUid());
-                                viewModel.getUserFriends(user.getFriendsUid(), new Callback<List<User>>() {
+                                userLogId = user.getUid();
+
+                                viewModel.getUserStuffCollection(user.getUid(), new Callback<List<Stuff>>() {
                                     @Override
-                                    public void onCallback(List<User> friendsList) {
-                                        Log.d(TAG, "friend list : ");
-                                        for (User friend: friendsList    ) {
-                                            Log.d(TAG, "friend : " + friend.getDisplayName());
+                                    public void onCallback(List<Stuff> stuffCollection) {
+                                        for (Stuff stuff :
+                                                stuffCollection) {
+                                            Log.d(TAG, user.getDisplayName() +  "'s Stuff : "+  stuff.getDisplayName());
                                         }
                                     }
                                 });
@@ -168,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Log.d(TAG, "new user is created : " + user.getDisplayName());
                         viewModel.createUser(user);
+                        userLogId = user.getUid();
                     }
                 }
             });

@@ -19,8 +19,8 @@ public class HomeFragmentViewModel extends ViewModel {
 
 
 
-    void getUserFriends(List<String> friendsUid, Callback<List<User>> callback) {
-        getUserFriendsUseCase.getUserFriends(friendsUid, callback);
+    void getUserFriends(String userUid, Callback<List<User>> callback) {
+        getUserFriendsUseCase.getUserFriends(userUid, callback);
     }
 
     void getCurrentUserData(Callback<User> callback){

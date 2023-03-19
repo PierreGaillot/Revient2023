@@ -18,5 +18,9 @@
         android:id="@+id/newStuffFragment"
         android:name="com.prgaillot.revient.ui.NewStuffFragment.NewStuffFragment"
         android:label="fragment_new_stuff"
-        tools:layout="@layout/fragment_new_stuff" />
+        tools:layout="@layout/fragment_new_stuff" >
+        <action
+            android:id="@+id/action_newStuffFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+    </fragment>
 </navigation>

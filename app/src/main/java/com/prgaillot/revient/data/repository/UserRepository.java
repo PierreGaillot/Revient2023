@@ -11,14 +11,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
 import com.prgaillot.revient.utils.Callback;
-
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +29,8 @@ public class UserRepository {
     private static String USER_COLLECTION = "user";
     private static String TAG = "UserRepository";
     private static volatile UserRepository instance;
+
+    private final StuffRepository stuffRepository = StuffRepository.getInstance();
 
     public static UserRepository getInstance() {
         UserRepository result = instance;
@@ -106,7 +106,6 @@ public class UserRepository {
 
     public void getUser(String userUid, Callback<User> callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        List<User> friendsList = new ArrayList<>();
         db.collection(USER_COLLECTION)
                 .document(userUid)
                 .get()
@@ -122,7 +121,16 @@ public class UserRepository {
                 });
     }
 
-    public void getUserFriends(List<String> friendsUid, Callback<List<User>> callback) {
+    public void getUserFriendById(String userId, Callback<List<User>> callback){
+        getUser(userId, new Callback<User>() {
+            @Override
+            public void onCallback(User result) {
+                getUserFriendsByIdList(result.getFriendsUid(), callback);
+            }
+        });
+    }
+
+    public void getUserFriendsByIdList(List<String> friendsUid, Callback<List<User>> callback) {
         List<User> friendsList = new ArrayList<>();
 
         int i = 0;
@@ -148,5 +156,29 @@ public class UserRepository {
         }
 
         return user;
+    }
+
+    public void getUserStuffCollection(String userId, Callback<List<Stuff>> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(stuffRepository.STUFF_COLLECTION)
+                .whereEqualTo("ownerId", userId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<Stuff> stuffList = new ArrayList<>();
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                stuffList.add(snapshot.toObject(Stuff.class));
+                            }
+                            callback.onCallback(stuffList);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, e.getLocalizedMessage());
+                    }
+                });
     }
 }

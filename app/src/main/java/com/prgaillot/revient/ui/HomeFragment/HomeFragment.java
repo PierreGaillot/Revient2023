@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
         homeFragmentViewModel.getCurrentUserData(new Callback<User>() {
             @Override
             public void onCallback(User user) {
-                homeFragmentViewModel.getUserFriends(user.getFriendsUid(), new Callback<List<User>>() {
+                homeFragmentViewModel.getUserFriends(user.getUid(), new Callback<List<User>>() {
                     @Override
                     public void onCallback(List<User> friendsList) {
                         friendsAdapter.update(friendsList);
