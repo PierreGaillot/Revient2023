@@ -7,5 +7,5 @@ import com.prgaillot.revient.utils.Callback;
 public interface CreateStuffUseCase {
 
     CreateStuffUseCase instance = new CreateStuffUseCaseImpl();
-    void createStuff(Stuff stuff, Callback<Void> success);
+    void createStuff(Stuff stuff, Callback<String> success);
 }

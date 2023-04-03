@@ -1,6 +1,10 @@
 package com.prgaillot.revient.ui.MainActivity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.firebase.ui.auth.AuthUI;
@@ -13,9 +17,12 @@ import com.google.android.gms.tasks.Task;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
@@ -32,6 +39,7 @@ import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
 import com.prgaillot.revient.utils.Callback;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private MainActivityViewModel viewModel;
     private AppBarConfiguration appBarConfiguration;
-
     private String userLogId;
+
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -80,9 +88,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle newStuffBundle = new Bundle();
-                newStuffBundle.putString("ownerId", userLogId);
-                navController.navigate(R.id.action_HomeFragment_to_newStuffFragment, newStuffBundle);
+                navController.navigate(R.id.action_HomeFragment_to_newStuffActivity);
             }
         });
 
@@ -154,11 +160,11 @@ public class MainActivity extends AppCompatActivity {
             viewModel.userIsRegistered(firebaseUser.getUid(), new Callback<Boolean>() {
                 @Override
                 public void onCallback(Boolean result) {
-                    if(result){
+                    if (result) {
                         viewModel.getCurrentUserData(new Callback<User>() {
                             @Override
                             public void onCallback(User user) {
-                                Log.d(TAG,  user.getDisplayName() + " is already a user.\n uid : " + user.getDisplayName() + "\n email : " +user.getEmail() + "\n friendsUid : " + user.getFriendsUid());
+                                Log.d(TAG, user.getDisplayName() + " is already a user.\n uid : " + user.getDisplayName() + "\n email : " + user.getEmail() + "\n friendsUid : " + user.getFriendsUid());
                                 userLogId = user.getUid();
 
                                 viewModel.getUserStuffCollection(user.getUid(), new Callback<List<Stuff>>() {
@@ -166,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                                     public void onCallback(List<Stuff> stuffCollection) {
                                         for (Stuff stuff :
                                                 stuffCollection) {
-                                            Log.d(TAG, user.getDisplayName() +  "'s Stuff : "+  stuff.getDisplayName());
+                                            Log.d(TAG, user.getDisplayName() + "'s Stuff : " + stuff.getDisplayName());
                                         }
                                     }
                                 });
@@ -194,6 +200,4 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
 }

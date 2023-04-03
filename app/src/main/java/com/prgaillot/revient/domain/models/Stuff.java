@@ -50,4 +50,9 @@ public class Stuff {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
+    public String getImgUrl() {
+        return "stuffImg/"+ uid + ".jpeg";
+    }
+
 }

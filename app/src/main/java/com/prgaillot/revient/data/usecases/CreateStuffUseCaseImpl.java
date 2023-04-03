@@ -10,7 +10,7 @@ public class CreateStuffUseCaseImpl implements CreateStuffUseCase {
     StuffRepository stuffRepository = StuffRepository.getInstance();
 
     @Override
-    public void createStuff(Stuff stuff, Callback<Void> success) {
+    public void createStuff(Stuff stuff, Callback<String> success) {
         stuffRepository.createStuff(stuff, success);
     }
 }

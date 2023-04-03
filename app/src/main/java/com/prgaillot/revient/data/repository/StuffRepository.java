@@ -24,7 +24,7 @@ public class StuffRepository {
     }
 
 
-    public void createStuff(Stuff stuff, Callback<Void> success) {
+    public void createStuff(Stuff stuff, Callback<String> success) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(STUFF_COLLECTION)
                 .add(stuff)
@@ -38,7 +38,7 @@ public class StuffRepository {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
-                                        success.onCallback(unused);
+                                        success.onCallback(documentReference.getId());
                                     }
                                 });
                     }
