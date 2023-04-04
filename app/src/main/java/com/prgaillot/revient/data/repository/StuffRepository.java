@@ -32,6 +32,12 @@ public class StuffRepository {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         stuff.setUid(documentReference.getId());
+                        long currentTimestamp = System.currentTimeMillis();
+                        if(stuff.getBorrowerId() != null){
+                            stuff.setInitialLoanDateTimestamp(currentTimestamp);
+                        }
+
+                        stuff.setCreationTimeStamp(currentTimestamp);
                         db.collection(STUFF_COLLECTION)
                                 .document(documentReference.getId())
                                 .set(stuff)

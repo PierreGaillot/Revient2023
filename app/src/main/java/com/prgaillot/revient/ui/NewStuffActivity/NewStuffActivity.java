@@ -23,6 +23,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,15 +41,19 @@ import com.prgaillot.revient.utils.Callback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class NewStuffActivity extends AppCompatActivity {
 
+    TextView durationTextView;
     AutoCompleteTextView borrowerACTextView;
     EditText displayNameEditText;
     Button submitBtn, photoBtn;
     ImageView image;
+
+    SeekBar durationSeekbar;
     private NewStuffActivityViewModel viewModel;
     private HashMap<String, String> friendsHashMap;
     private final int CAMERA_REQUEST_CODE = 102;
@@ -68,12 +74,49 @@ public class NewStuffActivity extends AppCompatActivity {
         borrowerACTextView = view.findViewById(R.id.newStuff_borrower_AutoCompleteTV);
         photoBtn = view.findViewById(R.id.newStuff_photo_btn);
         image = view.findViewById(R.id.newStuff_imageView);
+        durationTextView = view.findViewById(R.id.newStuff_loanDuration_textView);
+        durationSeekbar = view.findViewById(R.id.newStuff_loanDuration_seekBar);
+
+        durationSeekbar.setMax(12);
+        durationSeekbar.setProgress(3, true);
+
+        HashMap<Integer, String> durationDisplayScale = new HashMap<>();
+        durationDisplayScale.put(0, "2 heures");
+        durationDisplayScale.put(1, "6 heures");
+        durationDisplayScale.put(2, "12 heures");
+        durationDisplayScale.put(3, "1 journée");
+        durationDisplayScale.put(4, "2 jours");
+        durationDisplayScale.put(5, "1 semaine");
+        durationDisplayScale.put(6, "2 semaines");
+        durationDisplayScale.put(7, "3 semaines");
+        durationDisplayScale.put(8, "1 mois");
+        durationDisplayScale.put(9, "2 mois");
+        durationDisplayScale.put(10, "4 mois");
+        durationDisplayScale.put(11, "6 mois");
+        durationDisplayScale.put(12, "1an");
+
+
+        HashMap<Integer, Long> durationTimeScale = new HashMap<>();
+        durationTimeScale.put(0, 7200000L);
+        durationTimeScale.put(1, 21600000L);
+        durationTimeScale.put(2, 43200000L);
+        durationTimeScale.put(3, 86400000L);
+        durationTimeScale.put(4, 172800000L);
+        durationTimeScale.put(5, 604800000L);
+        durationTimeScale.put(6, 1209600000L);
+        durationTimeScale.put(7, 1814400000L);
+        durationTimeScale.put(8, 2419200000L);
+        durationTimeScale.put(9, 4838400000L);
+        durationTimeScale.put(10, 9676800000L);
+        durationTimeScale.put(11, 19353600000L);
+        durationTimeScale.put(12, 94608000000L);
+
+        durationTextView.setText(durationDisplayScale.get(durationSeekbar.getProgress()));
 
         viewModel.getCurrentUser(new Callback<User>() {
             @Override
             public void onCallback(User user) {
 
-                Log.d(TAG, user.toString());
                 viewModel.getUserFriend(user.getUid(), new Callback<List<User>>() {
                     @Override
                     public void onCallback(List<User> result) {
@@ -105,12 +148,13 @@ public class NewStuffActivity extends AppCompatActivity {
                                     if (!borrowerACTextView.getText().toString().isEmpty() && !friendsHashMap.isEmpty()) {
                                         stuff.setBorrowerId(friendsHashMap.get(borrowerACTextView.getText().toString()));
                                     }
+                                    stuff.setInitialLoanDurationTimestamp(durationTimeScale.get(durationSeekbar.getProgress()));
                                     viewModel.createStuff(stuff, new Callback<String>() {
                                         @Override
                                         public void onCallback(String result) {
                                             createImgRef(result);
                                             Toast.makeText(getBaseContext(), stuff.getDisplayName() + "has been added", Toast.LENGTH_SHORT).show();
-                                            Intent mainActIntent =  new Intent(getBaseContext(),MainActivity.class);
+                                            Intent mainActIntent = new Intent(getBaseContext(), MainActivity.class);
                                             startActivity(mainActIntent);
                                         }
                                     });
@@ -124,6 +168,25 @@ public class NewStuffActivity extends AppCompatActivity {
         });
 
 
+        durationSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                durationTextView.setText(durationDisplayScale.get(progress));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                durationTextView.setText(durationDisplayScale.get(durationSeekbar.getProgress()));
+            }
+        });
+
+
     }
 
 
@@ -133,7 +196,7 @@ public class NewStuffActivity extends AppCompatActivity {
     }
 
     public void askPermissionsCamera() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMERA_REQUEST_CODE);
         } else {
             openCamera();
@@ -184,9 +247,6 @@ public class NewStuffActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Erreur de l'upload de l'image !", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
 
 
     }

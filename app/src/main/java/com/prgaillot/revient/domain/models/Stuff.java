@@ -9,6 +9,8 @@ public class Stuff {
     String ownerId;
     @Nullable
     String borrowerId;
+    @Nullable
+    long creationTimeStamp, initialLoanDateTimestamp, initialLoanDurationTimestamp, backTimeTimestamp;
 
     public Stuff() {
     }
@@ -55,4 +57,35 @@ public class Stuff {
         return "stuffImg/"+ uid + ".jpeg";
     }
 
+    public long getCreationTimeStamp() {
+        return creationTimeStamp;
+    }
+
+    public void setCreationTimeStamp(long creationTimeStamp) {
+        this.creationTimeStamp = creationTimeStamp;
+    }
+
+    public long getInitialLoanDateTimestamp() {
+        return initialLoanDateTimestamp;
+    }
+
+    public void setInitialLoanDateTimestamp(long initialLoanDateTimestamp) {
+        this.initialLoanDateTimestamp = initialLoanDateTimestamp;
+    }
+
+    public long getInitialLoanDurationTimestamp() {
+        return initialLoanDurationTimestamp;
+    }
+
+    public void setInitialLoanDurationTimestamp(long initialLoanDurationTimestamp) {
+        this.initialLoanDurationTimestamp = initialLoanDurationTimestamp;
+    }
+
+    public long getBackTimeTimestamp() {
+        if(initialLoanDurationTimestamp == 0 || borrowerId == null){
+            return 0;
+        } else {
+           return  (initialLoanDateTimestamp + initialLoanDurationTimestamp) - System.currentTimeMillis();
+        }
+    }
 }

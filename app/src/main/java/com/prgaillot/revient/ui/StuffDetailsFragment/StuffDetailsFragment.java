@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.prgaillot.revient.R;
@@ -32,7 +34,7 @@ public class StuffDetailsFragment extends Fragment {
     }
 
     ImageView stuffImageView;
-    TextView displayNameTextView, actionTextView;
+    TextView displayNameTextView, actionTextView, backDurationTimeTextView;
 
     StuffDetailsViewModel viewModel;
 
@@ -43,23 +45,34 @@ public class StuffDetailsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.stuff_details_fragment, container, false);
         viewModel = new ViewModelProvider(this).get(StuffDetailsViewModel.class);
-
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
         Bundle data = getArguments();
-        if(data != null) {
+        if (data != null) {
+
+
             stuffItem = (StuffItemUiModel) data.getSerializable("stuffItem");
             stuffImageView = view.findViewById(R.id.stuffDetails_imageView);
             displayNameTextView = view.findViewById(R.id.stuffDetails_name_textView);
             actionTextView = view.findViewById(R.id.stuffDetails_action_textView);
+            backDurationTimeTextView = view.findViewById(R.id.stuffDetails_backDurationTime_textView);
 
-            if(stuffItem.getStuff().getBorrowerId() != null){
 
-                viewModel.getUser(stuffItem.getStuff().getBorrowerId(), new Callback<User>() {
+            if (stuffItem.getStuff().getBorrowerId().equals(firebaseUser.getUid())) {
+                viewModel.getUser(stuffItem.getStuff().getOwnerId(), new Callback<User>() {
                     @Override
                     public void onCallback(User user) {
                         actionTextView.setVisibility(View.VISIBLE);
                         actionTextView.setText(String.format("Borrowed to %s", user.getDisplayName()));
+                    }
+                });
+            } else if (stuffItem.getStuff().getBorrowerId() != null) {
+                viewModel.getUser(stuffItem.getStuff().getBorrowerId(), new Callback<User>() {
+                    @Override
+                    public void onCallback(User user) {
+                        actionTextView.setVisibility(View.VISIBLE);
+                        actionTextView.setText(String.format("Loan to to %s", user.getDisplayName()));
                     }
                 });
 
@@ -67,6 +80,23 @@ public class StuffDetailsFragment extends Fragment {
 
 
             displayNameTextView.setText(stuffItem.getStuff().getDisplayName());
+            long backDurationTime = stuffItem.getStuff().getBackTimeTimestamp();
+            int backDurationTimeSeconds = (int) (backDurationTime / 3600);
+            int backDurationTimeMinutes = (int) (backDurationTimeSeconds / 60);
+            int backDurationTimeHours = (int) (backDurationTimeMinutes / 60);
+            int backDurationTimeDays = (int) (backDurationTimeHours / 24);
+
+            StringBuilder backDuration = new StringBuilder();
+            if (backDurationTimeDays > 0) {
+                backDuration.append(backDurationTimeDays + " days ");
+            }
+
+            if ((backDurationTimeHours - backDurationTimeDays * 24) > 0) {
+                backDuration.append((backDurationTimeHours - backDurationTimeDays * 24) + " hours");
+            }
+
+
+            backDurationTimeTextView.setText(backDuration.toString());
 
 
             String stuffUrl = stuffItem.getStuff().getImgUrl();
@@ -84,8 +114,6 @@ public class StuffDetailsFragment extends Fragment {
                 }
             });
         }
-
-
 
 
         return view;

@@ -47,6 +47,20 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/newStuff_loanDuration_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <SeekBar
+            android:id="@+id/newStuff_loanDuration_seekBar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:max="10"
+            android:progress="3" />
+
         <ImageView
             android:id="@+id/newStuff_imageView"
             android:layout_width="128dp"
