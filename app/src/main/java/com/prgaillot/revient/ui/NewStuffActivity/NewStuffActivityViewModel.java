@@ -1,4 +1,4 @@
-package com.prgaillot.revient.data.repository.NewStuffActivity;
+package com.prgaillot.revient.ui.NewStuffActivity;
 
 import androidx.lifecycle.ViewModel;
 
@@ -16,7 +16,6 @@ public class NewStuffActivityViewModel extends ViewModel {
 
     private final CreateStuffUseCase createStuffUseCase = CreateStuffUseCase.instance;
     private final GetUserFriendsUseCase getUserFriendsUseCase = GetUserFriendsUseCase.instance;
-
     private final GetCurrentUserDataUseCase getCurrentUserDataUseCase = GetCurrentUserDataUseCase.instance;
 
     public void createStuff(Stuff stuff, Callback<String> success){

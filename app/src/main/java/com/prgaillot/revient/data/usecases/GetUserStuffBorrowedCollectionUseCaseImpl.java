@@ -1,6 +1,5 @@
 package com.prgaillot.revient.data.usecases;
 
-import com.prgaillot.revient.data.repository.StuffRepository;
 import com.prgaillot.revient.data.repository.UserRepository;
 import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.usecases.GetUserStuffBorrowedCollectionUseCase;

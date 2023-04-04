@@ -1,4 +1,4 @@
-package com.prgaillot.revient.data.repository.NewStuffActivity;
+package com.prgaillot.revient.ui.NewStuffActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -73,7 +73,7 @@ public class NewStuffActivity extends AppCompatActivity {
             @Override
             public void onCallback(User user) {
 
-
+                Log.d(TAG, user.toString());
                 viewModel.getUserFriend(user.getUid(), new Callback<List<User>>() {
                     @Override
                     public void onCallback(List<User> result) {

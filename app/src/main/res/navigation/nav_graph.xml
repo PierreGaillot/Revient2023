@@ -23,7 +23,7 @@
     </fragment>
     <activity
         android:id="@+id/newStuffActivity"
-        android:name="com.prgaillot.revient.data.repository.NewStuffActivity.NewStuffActivity"
+        android:name="com.prgaillot.revient.ui.NewStuffActivity.NewStuffActivity"
         android:label="activity_new_stuff"
         tools:layout="@layout/activity_new_stuff" />
     <fragment

@@ -75,13 +75,13 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                Glide.with(holder.itemView.getContext())
+                Glide.with(holder.itemView.getContext().getApplicationContext())
                         .load(bytes)
                         .centerCrop()
                         .circleCrop()
                         .into(holder.stuffImageView);
 
-                Glide.with(holder.itemView.getContext())
+                Glide.with(holder.itemView.getContext().getApplicationContext())
                         .load(actionUrl)
                         .centerCrop()
                         .circleCrop()
