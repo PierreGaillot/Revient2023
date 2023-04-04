@@ -1,3 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="friend_list_margin">8dp</dimen>
+    <dimen name="friend_item_size">56dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

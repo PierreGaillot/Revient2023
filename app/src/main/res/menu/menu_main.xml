@@ -1,10 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.prgaillot.revient.ui.MainActivity">
+    tools:context="com.prgaillot.revient.ui.MainActivity.MainActivity">
+    <item
+        android:title="@string/action_logout"
+        android:id="@+id/action_logout"
+        android:orderInCategory="100"
+        />
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>
