@@ -121,7 +121,7 @@ public class UserRepository {
                 });
     }
 
-    public void getUserFriendById(String userId, Callback<List<User>> callback){
+    public void getUserFriendById(String userId, Callback<List<User>> callback) {
         getUser(userId, new Callback<User>() {
             @Override
             public void onCallback(User result) {
@@ -180,5 +180,39 @@ public class UserRepository {
                         Log.e(TAG, e.getLocalizedMessage());
                     }
                 });
+    }
+
+    public void getUserStuffBorrowedCollection(String userId, Callback<List<Stuff>> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(stuffRepository.STUFF_COLLECTION)
+                .whereEqualTo("borrowerId", userId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<Stuff> stuffList = new ArrayList<>();
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                stuffList.add(snapshot.toObject(Stuff.class));
+                            }
+                            callback.onCallback(stuffList);
+                        }
+                    }
+                });
+    }
+
+    public void getUserLoanedCollection(String userId, Callback<List<Stuff>> callback) {
+        List<Stuff> loanedStuffList = new ArrayList<>();
+        getUserStuffCollection(userId, new Callback<List<Stuff>>() {
+            @Override
+            public void onCallback(List<Stuff> stuffList) {
+                for (Stuff stuff : stuffList) {
+                    if(stuff.getBorrowerId() != null){
+                        loanedStuffList.add(stuff);
+                    }
+                }
+                callback.onCallback(loanedStuffList);
+            }
+        });
     }
 }
