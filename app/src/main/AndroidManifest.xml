@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Revient"
         tools:targetApi="31">
         <activity
-            android:name=".ui.NewStuffActivity.NewStuffActivity"
+            android:name=".data.repository.NewStuffActivity.NewStuffActivity"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity.MainActivity"

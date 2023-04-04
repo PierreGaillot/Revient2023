@@ -1,4 +1,4 @@
-package com.prgaillot.revient.ui.NewStuffActivity;
+package com.prgaillot.revient.data.repository.NewStuffActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -39,10 +38,6 @@ import com.prgaillot.revient.ui.MainActivity.MainActivity;
 import com.prgaillot.revient.utils.Callback;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

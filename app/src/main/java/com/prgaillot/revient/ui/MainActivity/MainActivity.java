@@ -1,10 +1,6 @@
 package com.prgaillot.revient.ui.MainActivity;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.firebase.ui.auth.AuthUI;
@@ -17,15 +13,11 @@ import com.google.android.gms.tasks.Task;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -37,25 +29,28 @@ import com.prgaillot.revient.R;
 import com.prgaillot.revient.databinding.ActivityMainBinding;
 import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
+import com.prgaillot.revient.ui.uiModels.StuffItemUiModel;
 import com.prgaillot.revient.utils.Callback;
 
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final int RC_SIGN_IN = 123;
     private MainActivityViewModel viewModel;
     private AppBarConfiguration appBarConfiguration;
     private String userLogId;
 
+    NavController navController;
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -71,26 +66,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        startSignInActivity();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) {
+            startSignInActivity();
+        }
 
 
+//        startSignInActivity();
         com.prgaillot.revient.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.toolbar);
+        fab = binding.getRoot().findViewById(R.id.fab);
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        fab = binding.getRoot().findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.action_HomeFragment_to_newStuffActivity);
             }
         });
+
 
     }
 
@@ -126,11 +126,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void startSignInActivity() {
-        createSignInIntent();
-    }
 
-    private void createSignInIntent() {
+    private void startSignInActivity() {
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -199,5 +196,11 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.logout_message), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    public void openStuffDetailsFragment(StuffItemUiModel stuffItem) {
+        Bundle stuffItemBundle = new Bundle();
+        stuffItemBundle.putSerializable("stuffItem", (Serializable) stuffItem);
+        navController.navigate(R.id.action_HomeFragment_to_stuffDetailsFragment, stuffItemBundle);
     }
 }

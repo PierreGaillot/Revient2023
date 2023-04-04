@@ -1,4 +1,4 @@
-package com.prgaillot.revient.ui.NewStuffActivity;
+package com.prgaillot.revient.data.repository.NewStuffActivity;
 
 import androidx.lifecycle.ViewModel;
 

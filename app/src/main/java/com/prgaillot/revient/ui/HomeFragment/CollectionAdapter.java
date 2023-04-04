@@ -17,26 +17,34 @@ import com.google.firebase.storage.StorageReference;
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
+import com.prgaillot.revient.ui.uiModels.StuffItemUiModel;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder> {
 
     private static final String TAG = "CollectionAdapter";
-    List<Stuff> collection;
+    List<StuffItemUiModel> collection;
+    StuffItemAdapterClickListener stuffItemAdapterClickListener;
 
-    public CollectionAdapter(List<Stuff> collection){this.collection = collection;}
+
+    public CollectionAdapter(List<StuffItemUiModel> collection, StuffItemAdapterClickListener stuffItemAdapterClickListener) {
+        this.collection = collection;
+        this.stuffItemAdapterClickListener = stuffItemAdapterClickListener;
+    }
 
 
     public static class CollectionViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView stuffImageView;
+        ImageView userAvatarImageView, stuffImageView;
         TextView stuffTextView;
 
         public CollectionViewHolder(@NonNull View itemView) {
             super(itemView);
             stuffImageView = itemView.findViewById(R.id.stuffListItem_imageView);
             stuffTextView = itemView.findViewById(R.id.stuffListItem_textView);
+            userAvatarImageView = itemView.findViewById(R.id.stuffListItem_userAvatar_imageView);
         }
     }
 
@@ -50,16 +58,34 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
 
     @Override
     public void onBindViewHolder(@NonNull CollectionAdapter.CollectionViewHolder holder, int position) {
-        holder.stuffTextView.setText(collection.get(position).getDisplayName());
+
+        StuffItemUiModel stuffItem = collection.get(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stuffItemAdapterClickListener.onItemClick(stuffItem);
+            }
+        });
+
+        holder.stuffTextView.setText(stuffItem.getStuff().getDisplayName());
+        String actionUrl = stuffItem.getActionUrl();
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference(collection.get(position).getImgUrl());
-        final long ONE_MEGABYTE = 1024*1024;
+        StorageReference storageReference = storage.getReference(stuffItem.getStuff().getImgUrl());
+        final long ONE_MEGABYTE = 1024 * 1024;
         storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Glide.with(holder.itemView.getContext())
                         .load(bytes)
+                        .centerCrop()
+                        .circleCrop()
                         .into(holder.stuffImageView);
+
+                Glide.with(holder.itemView.getContext())
+                        .load(actionUrl)
+                        .centerCrop()
+                        .circleCrop()
+                        .into(holder.userAvatarImageView);
             }
         });
 
@@ -71,7 +97,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         return collection.size();
     }
 
-    public void update(List<Stuff> collection) {
+    public void update(List<StuffItemUiModel> collection) {
         this.collection.clear();
         this.collection = collection;
         notifyDataSetChanged();
