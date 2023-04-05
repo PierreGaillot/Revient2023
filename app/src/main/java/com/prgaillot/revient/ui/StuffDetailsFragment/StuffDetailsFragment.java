@@ -50,34 +50,31 @@ public class StuffDetailsFragment extends Fragment {
 
         Bundle data = getArguments();
         if (data != null) {
-
-
             stuffItem = (StuffItemUiModel) data.getSerializable("stuffItem");
             stuffImageView = view.findViewById(R.id.stuffDetails_imageView);
             displayNameTextView = view.findViewById(R.id.stuffDetails_name_textView);
             actionTextView = view.findViewById(R.id.stuffDetails_action_textView);
             backDurationTimeTextView = view.findViewById(R.id.stuffDetails_backDurationTime_textView);
 
-
-            if (stuffItem.getStuff().getBorrowerId().equals(firebaseUser.getUid())) {
-                viewModel.getUser(stuffItem.getStuff().getOwnerId(), new Callback<User>() {
-                    @Override
-                    public void onCallback(User user) {
-                        actionTextView.setVisibility(View.VISIBLE);
-                        actionTextView.setText(String.format("Borrowed to %s", user.getDisplayName()));
-                    }
-                });
-            } else if (stuffItem.getStuff().getBorrowerId() != null) {
-                viewModel.getUser(stuffItem.getStuff().getBorrowerId(), new Callback<User>() {
-                    @Override
-                    public void onCallback(User user) {
-                        actionTextView.setVisibility(View.VISIBLE);
-                        actionTextView.setText(String.format("Loan to to %s", user.getDisplayName()));
-                    }
-                });
-
+            if(stuffItem.getStuff().getBorrowerId() != null ){
+                if (stuffItem.getStuff().getBorrowerId().equals(firebaseUser.getUid())) {
+                    viewModel.getUser(stuffItem.getStuff().getOwnerId(), new Callback<User>() {
+                        @Override
+                        public void onCallback(User user) {
+                            actionTextView.setVisibility(View.VISIBLE);
+                            actionTextView.setText(String.format("Borrowed to %s", user.getDisplayName()));
+                        }
+                    });
+                } else if (stuffItem.getStuff().getBorrowerId() != null) {
+                    viewModel.getUser(stuffItem.getStuff().getBorrowerId(), new Callback<User>() {
+                        @Override
+                        public void onCallback(User user) {
+                            actionTextView.setVisibility(View.VISIBLE);
+                            actionTextView.setText(String.format("Loan to to %s", user.getDisplayName()));
+                        }
+                    });
+                }
             }
-
 
             displayNameTextView.setText(stuffItem.getStuff().getDisplayName());
             long backDurationTime = stuffItem.getStuff().getBackTimeTimestamp();
