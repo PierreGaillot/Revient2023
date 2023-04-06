@@ -8,15 +8,29 @@
 
     <ImageView
         android:id="@+id/stuffDetails_imageView"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="60dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/backgrounds/scenic" />
+
+    <ProgressBar
+        android:id="@+id/stuffDetails_backDuration_progressBar"
+        style="@style/CircularDeterminateProgressBar"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:indeterminateOnly="false"
+        android:progress="30"
+        android:rotation="180"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:progress="75" />
 
     <TextView
         android:id="@+id/stuffDetails_name_textView"
@@ -72,4 +86,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/stuffDetails_iniLoanDate_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stuffDetails_backDurationTime_textView" />
+
+    <TextView
+        android:id="@+id/stuffDetails_loanDuration_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stuffDetails_iniLoanDate_textView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

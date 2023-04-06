@@ -20,6 +20,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_HomeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <activity
         android:id="@+id/newStuffActivity"
@@ -32,6 +35,15 @@
         android:label="StuffDetailsFragment" >
         <action
             android:id="@+id/action_stuffDetailsFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.prgaillot.revient.ui.ProfileFragment.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
     </fragment>
 </navigation>

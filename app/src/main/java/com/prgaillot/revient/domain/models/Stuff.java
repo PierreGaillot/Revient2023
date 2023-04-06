@@ -10,7 +10,7 @@ public class Stuff {
     @Nullable
     String borrowerId;
     @Nullable
-    long creationTimeStamp, initialLoanDateTimestamp, initialLoanDurationTimestamp, backTimeTimestamp;
+    long creationTimeStamp, initialLoanDateTimestamp, initialLoanDurationTimestamp, additionalDelay;
 
     public Stuff() {
     }
@@ -85,7 +85,15 @@ public class Stuff {
         if(initialLoanDurationTimestamp == 0 || borrowerId == null){
             return 0;
         } else {
-           return  (initialLoanDateTimestamp + initialLoanDurationTimestamp) - System.currentTimeMillis();
+           return  (initialLoanDateTimestamp + initialLoanDurationTimestamp + additionalDelay) - System.currentTimeMillis();
         }
+    }
+
+    public long getAdditionalDelay() {
+        return additionalDelay;
+    }
+
+    public void setAdditionalDelay(long additionalDelay) {
+        this.additionalDelay = this.additionalDelay + additionalDelay;
     }
 }

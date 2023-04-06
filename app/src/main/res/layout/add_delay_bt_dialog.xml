@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="16dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="@string/add_delay_title"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="20sp"
+        android:typeface="normal" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="help [borrowerName] and add a new delay for him to bring this stuff back." />
+
+    <SeekBar
+        android:id="@+id/addDelayBtDial_seekBar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:max="10"
+        android:progress="3" />
+
+    <TextView
+        android:id="@+id/addDelayBtDial_duration_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add 2 days."
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/addDelayBtDial_submit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/validate" />
+</LinearLayout>

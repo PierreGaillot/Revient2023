@@ -18,5 +18,6 @@
     <color name="rv_txt_light">#f9fff5</color>
     <color name="rv_txt_dark">#070011</color>
     <color name="rv_txt_medium">#9c9b9d</color>
+    <color name="rv_warn">#B60C0C</color>
 
 </resources>

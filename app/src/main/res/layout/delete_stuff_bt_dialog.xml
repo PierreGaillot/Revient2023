@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Delete this stuff ?"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Are you sure do you want delete this stuff ?" />
+
+    <Button
+        android:id="@+id/deleteStuffBtDial_yes_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@android:string/yes" />
+
+    <Button
+        android:id="@+id/deleteStuffBtDial_no_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/rv_warn"
+        android:text="@android:string/no" />
+</LinearLayout>

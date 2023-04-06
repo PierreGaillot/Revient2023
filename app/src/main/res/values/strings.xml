@@ -109,6 +109,10 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_friends">friends</string>
+    <string name="add_new_delay">add delay</string>
+    <string name="add_delay_title">add a new delay …</string>
+    <string name="loanded">"loanded : "</string>
+    <string name="initialLoanDurationLabel">initial Loan duration : </string>
 
 
 </resources>

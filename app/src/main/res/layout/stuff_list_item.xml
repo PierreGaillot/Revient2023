@@ -10,7 +10,6 @@
         android:id="@+id/stuffListItem_imageView"
         android:layout_width="88dp"
         android:layout_height="88dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,18 +19,23 @@
         android:id="@+id/stuffListItem_userAvatar_imageView"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/stuffListItem_imageView"
+        app:layout_constraintEnd_toEndOf="@id/stuffListItem_imageView"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/stuffListItem_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:ems="5"
+        android:maxEms="5"
+        android:maxLines="1"
+        android:minEms="2"
+        android:text="TextViewTextViewTextViewTextViewTextViewTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/stuffListItem_imageView" />
+        app:layout_constraintTop_toBottomOf="@id/stuffListItem_imageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

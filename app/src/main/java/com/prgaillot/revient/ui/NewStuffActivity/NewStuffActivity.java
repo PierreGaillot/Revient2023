@@ -34,6 +34,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.databinding.ActivityNewStuffBinding;
+import com.prgaillot.revient.domain.models.DurationObj;
 import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
 import com.prgaillot.revient.ui.MainActivity.MainActivity;
@@ -41,7 +42,6 @@ import com.prgaillot.revient.utils.Callback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,44 +74,29 @@ public class NewStuffActivity extends AppCompatActivity {
         borrowerACTextView = view.findViewById(R.id.newStuff_borrower_AutoCompleteTV);
         photoBtn = view.findViewById(R.id.newStuff_photo_btn);
         image = view.findViewById(R.id.newStuff_imageView);
-        durationTextView = view.findViewById(R.id.newStuff_loanDuration_textView);
-        durationSeekbar = view.findViewById(R.id.newStuff_loanDuration_seekBar);
+        durationTextView = view.findViewById(R.id.delaySelection_textView);
+        durationSeekbar = view.findViewById(R.id.delaySelection_seekBar);
 
         durationSeekbar.setMax(12);
         durationSeekbar.setProgress(3, true);
 
-        HashMap<Integer, String> durationDisplayScale = new HashMap<>();
-        durationDisplayScale.put(0, "2 heures");
-        durationDisplayScale.put(1, "6 heures");
-        durationDisplayScale.put(2, "12 heures");
-        durationDisplayScale.put(3, "1 journée");
-        durationDisplayScale.put(4, "2 jours");
-        durationDisplayScale.put(5, "1 semaine");
-        durationDisplayScale.put(6, "2 semaines");
-        durationDisplayScale.put(7, "3 semaines");
-        durationDisplayScale.put(8, "1 mois");
-        durationDisplayScale.put(9, "2 mois");
-        durationDisplayScale.put(10, "4 mois");
-        durationDisplayScale.put(11, "6 mois");
-        durationDisplayScale.put(12, "1an");
+        List<DurationObj> durationList = new ArrayList<>();
+        durationList.add(new DurationObj("2 heures", 7200000L));
+        durationList.add(new DurationObj("6 heures", 21600000L));
+        durationList.add(new DurationObj("12 heures", 43200000L));
+        durationList.add(new DurationObj("1 journée", 86400000L));
+        durationList.add(new DurationObj("2 jours", 172800000L));
+        durationList.add(new DurationObj("1 semaine", 604800000L));
+        durationList.add(new DurationObj("2 semaines", 1209600000L));
+        durationList.add(new DurationObj("3 semaines", 1814400000L));
+        durationList.add(new DurationObj("1 mois", 2419200000L));
+        durationList.add(new DurationObj("2 mois", 4838400000L));
+        durationList.add(new DurationObj("4 mois", 9676800000L));
+        durationList.add(new DurationObj("6 mois", 19353600000L));
+        durationList.add(new DurationObj("1an", 94608000000L));
 
 
-        HashMap<Integer, Long> durationTimeScale = new HashMap<>();
-        durationTimeScale.put(0, 7200000L);
-        durationTimeScale.put(1, 21600000L);
-        durationTimeScale.put(2, 43200000L);
-        durationTimeScale.put(3, 86400000L);
-        durationTimeScale.put(4, 172800000L);
-        durationTimeScale.put(5, 604800000L);
-        durationTimeScale.put(6, 1209600000L);
-        durationTimeScale.put(7, 1814400000L);
-        durationTimeScale.put(8, 2419200000L);
-        durationTimeScale.put(9, 4838400000L);
-        durationTimeScale.put(10, 9676800000L);
-        durationTimeScale.put(11, 19353600000L);
-        durationTimeScale.put(12, 94608000000L);
-
-        durationTextView.setText(durationDisplayScale.get(durationSeekbar.getProgress()));
+        durationTextView.setText(durationList.get(durationSeekbar.getProgress()).getName());
 
         viewModel.getCurrentUser(new Callback<User>() {
             @Override
@@ -148,7 +133,7 @@ public class NewStuffActivity extends AppCompatActivity {
                                     if (!borrowerACTextView.getText().toString().isEmpty() && !friendsHashMap.isEmpty()) {
                                         stuff.setBorrowerId(friendsHashMap.get(borrowerACTextView.getText().toString()));
                                     }
-                                    stuff.setInitialLoanDurationTimestamp(durationTimeScale.get(durationSeekbar.getProgress()));
+                                    stuff.setInitialLoanDurationTimestamp(durationList.get(durationSeekbar.getProgress()).getValue());
                                     viewModel.createStuff(stuff, new Callback<String>() {
                                         @Override
                                         public void onCallback(String result) {
@@ -171,7 +156,7 @@ public class NewStuffActivity extends AppCompatActivity {
         durationSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                durationTextView.setText(durationDisplayScale.get(progress));
+                durationTextView.setText(durationList.get(progress).getName());
 
             }
 
@@ -182,7 +167,7 @@ public class NewStuffActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                durationTextView.setText(durationDisplayScale.get(durationSeekbar.getProgress()));
+                durationTextView.setText(durationList.get(durationSeekbar.getProgress()).getName());
             }
         });
 

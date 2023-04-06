@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".repository.NewStuffActivity.NewStuffActivity">
+    tools:context=".ui.NewStuffActivity.NewStuffActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,13 +48,13 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/newStuff_loanDuration_textView"
+            android:id="@+id/delaySelection_textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
 
         <SeekBar
-            android:id="@+id/newStuff_loanDuration_seekBar"
+            android:id="@+id/delaySelection_seekBar"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="40dp"

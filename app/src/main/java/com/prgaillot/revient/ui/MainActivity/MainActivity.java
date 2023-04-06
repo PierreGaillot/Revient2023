@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         com.prgaillot.revient.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setLogo(R.drawable.rv_logo_green_48);
         fab = binding.getRoot().findViewById(R.id.fab);
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
@@ -202,5 +203,9 @@ public class MainActivity extends AppCompatActivity {
         Bundle stuffItemBundle = new Bundle();
         stuffItemBundle.putSerializable("stuffItem", (Serializable) stuffItem);
         navController.navigate(R.id.action_HomeFragment_to_stuffDetailsFragment, stuffItemBundle);
+    }
+
+    public void openHomeFragment() {
+        navController.navigate(R.id.action_stuffDetailsFragment_to_HomeFragment);
     }
 }
