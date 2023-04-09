@@ -82,10 +82,10 @@ public class Stuff {
     }
 
     public long getBackTimeTimestamp() {
-        if(initialLoanDurationTimestamp == 0 || borrowerId == null){
+        if(borrowerId == null){
             return 0;
         } else {
-           return  (initialLoanDateTimestamp + initialLoanDurationTimestamp + additionalDelay) - System.currentTimeMillis();
+           return  (initialLoanDateTimestamp + initialLoanDurationTimestamp + additionalDelay);
         }
     }
 

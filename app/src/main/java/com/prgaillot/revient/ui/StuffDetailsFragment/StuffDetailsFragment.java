@@ -1,8 +1,6 @@
 package com.prgaillot.revient.ui.StuffDetailsFragment;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +11,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,7 +47,7 @@ public class StuffDetailsFragment extends Fragment {
     }
 
     ImageView stuffImageView;
-    TextView displayNameTextView, actionTextView, backDurationTimeTextView, initialLoanDateTextView, loanDurationTextView;
+    TextView displayNameTextView, actionTextView, backDurationTimeTextView, initialLoanDateTextView, loanDurationTextView, comeBackDateTextView;
     StuffDetailsViewModel viewModel;
     ProgressBar backDurationProgressBar;
     String userLoggedId;
@@ -81,43 +74,11 @@ public class StuffDetailsFragment extends Fragment {
             backDurationProgressBar = view.findViewById(R.id.stuffDetails_backDuration_progressBar);
             actionBtn = view.findViewById(R.id.stuffDetails_action_btn);
             deleteBtn = view.findViewById(R.id.stuffDetails_delete_btn);
-            initialLoanDateTextView = view.findViewById(R.id.stuffDetails_iniLoanDate_textView);
-            loanDurationTextView = view.findViewById(R.id.stuffDetails_loanDuration_textView);
-
-            deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteStuffBottomSheetDial = new BottomSheetDialog(getContext());
-                    View deleteStuffBottomDialView = getLayoutInflater().inflate(R.layout.delete_stuff_bt_dialog, null, false);
-                    Button deleteYes, deleteNo;
-                    deleteNo = deleteStuffBottomDialView.findViewById(R.id.deleteStuffBtDial_no_btn);
-                    deleteYes = deleteStuffBottomDialView.findViewById(R.id.deleteStuffBtDial_yes_btn);
-                    deleteYes.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            viewModel.deleteStuff(stuffItem.getStuff().getUid(), new Callback<Void>() {
-                                @Override
-                                public void onCallback(Void result) {
-                                    deleteStuffBottomSheetDial.dismiss();
-                                    ((MainActivity) getActivity()).openHomeFragment();
-                                    Toast.makeText(getContext(), "This stuff as been deleted", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    });
-                    deleteNo.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            deleteStuffBottomSheetDial.dismiss();
-                        }
-                    });
-                    deleteStuffBottomSheetDial.setContentView(deleteStuffBottomDialView);
-                    deleteStuffBottomSheetDial.show();
-                }
-            });
+            initialLoanDateTextView = view.findViewById(R.id.stuffDetails_initialLoanDate_textView);
+            loanDurationTextView = view.findViewById(R.id.stuffDetails_initialLoanDuration_textView);
+            comeBackDateTextView = view.findViewById(R.id.stuffDetails_comeBackDate_textView);
 
             if (stuffItem.getStuff().getBorrowerId() != null) {
-                initLoanDurationTextView();
 
                 if (stuffItem.getStuff().getBorrowerId().equals(userLoggedId)) {
                     viewModel.getUser(stuffItem.getStuff().getOwnerId(), new Callback<User>() {
@@ -131,6 +92,39 @@ public class StuffDetailsFragment extends Fragment {
 
                     actionBtn.setText(R.string.add_new_delay);
 
+                    // **** DELETE ACTION ****
+                    deleteBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deleteStuffBottomSheetDial = new BottomSheetDialog(getContext());
+                            View deleteStuffBottomDialView = getLayoutInflater().inflate(R.layout.delete_stuff_bt_dialog, null, false);
+                            Button deleteYes, deleteNo;
+                            deleteNo = deleteStuffBottomDialView.findViewById(R.id.deleteStuffBtDial_no_btn);
+                            deleteYes = deleteStuffBottomDialView.findViewById(R.id.deleteStuffBtDial_yes_btn);
+                            deleteYes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    viewModel.deleteStuff(stuffItem.getStuff().getUid(), new Callback<Void>() {
+                                        @Override
+                                        public void onCallback(Void result) {
+                                            deleteStuffBottomSheetDial.dismiss();
+                                            ((MainActivity) getActivity()).openHomeFragment();
+                                            Toast.makeText(getContext(), "This stuff as been deleted", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                            deleteNo.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    deleteStuffBottomSheetDial.dismiss();
+                                }
+                            });
+                            deleteStuffBottomSheetDial.setContentView(deleteStuffBottomDialView);
+                            deleteStuffBottomSheetDial.show();
+                        }
+                    });
+
                     // **** ADD DELAY ACTION ****
                     actionBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -140,20 +134,29 @@ public class StuffDetailsFragment extends Fragment {
                             Button submitBtn = bottomDialView.findViewById(R.id.addDelayBtDial_submit_btn);
                             SeekBar delaySeekBar = bottomDialView.findViewById(R.id.addDelayBtDial_seekBar);
                             TextView durationTextView = bottomDialView.findViewById(R.id.addDelayBtDial_duration_textView);
+
+                            long second = 1000;
+                            long min = second * 60;
+                            long hour = min * 60;
+                            long day = hour * 24;
+                            long week  = day * 7;
+                            long month = day *30;
+                            long year = day * 365;
+
                             List<DurationObj> durationList = new ArrayList<>();
-                            durationList.add(new DurationObj("2 heures", 7200000L));
-                            durationList.add(new DurationObj("6 heures", 21600000L));
-                            durationList.add(new DurationObj("12 heures", 43200000L));
-                            durationList.add(new DurationObj("1 journée", 86400000L));
-                            durationList.add(new DurationObj("2 jours", 172800000L));
-                            durationList.add(new DurationObj("1 semaine", 604800000L));
-                            durationList.add(new DurationObj("2 semaines", 1209600000L));
-                            durationList.add(new DurationObj("3 semaines", 1814400000L));
-                            durationList.add(new DurationObj("1 mois", 2419200000L));
-                            durationList.add(new DurationObj("2 mois", 4838400000L));
-                            durationList.add(new DurationObj("4 mois", 9676800000L));
-                            durationList.add(new DurationObj("6 mois", 19353600000L));
-                            durationList.add(new DurationObj("1an", 94608000000L));
+                            durationList.add(new DurationObj("2 heures", 2*hour));
+                            durationList.add(new DurationObj("6 heures", 6*hour));
+                            durationList.add(new DurationObj("12 heures", 12*hour));
+                            durationList.add(new DurationObj("1 journée", day));
+                            durationList.add(new DurationObj("2 jours", 2*day));
+                            durationList.add(new DurationObj("1 semaine", week));
+                            durationList.add(new DurationObj("2 semaines", 2*week));
+                            durationList.add(new DurationObj("3 semaines", 3*week));
+                            durationList.add(new DurationObj("1 mois", month));
+                            durationList.add(new DurationObj("2 mois", 2*month));
+                            durationList.add(new DurationObj("4 mois", 4*month));
+                            durationList.add(new DurationObj("6 mois", 6*month));
+                            durationList.add(new DurationObj("1an", year));
 
                             delaySeekBar.setProgress(5);
                             durationTextView.setText(durationList.get(delaySeekBar.getProgress()).getName());
@@ -185,8 +188,7 @@ public class StuffDetailsFragment extends Fragment {
                                         public void onCallback(Void result) {
                                             Toast.makeText(getContext(), "vous avez ajouté un delais de " + durationDelay.getName(), Toast.LENGTH_SHORT).show();
                                             stuffItem.getStuff().setAdditionalDelay(durationDelay.getValue());
-                                            refreshTimerDelay();
-                                            initLoanDurationTextView();
+                                            initDelays();
                                             addDelayBottomSheetDial.dismiss();
                                         }
                                     });
@@ -207,25 +209,9 @@ public class StuffDetailsFragment extends Fragment {
                 }
             }
 
-
             displayNameTextView.setText(stuffItem.getStuff().getDisplayName());
-            long backDurationTime = stuffItem.getStuff().getBackTimeTimestamp();
-            int backDurationTimeSeconds = (int) (backDurationTime / 3600);
-            int backDurationTimeMinutes = (int) (backDurationTimeSeconds / 60);
-            int backDurationTimeHours = (int) (backDurationTimeMinutes / 60);
-            int backDurationTimeDays = (int) (backDurationTimeHours / 24);
 
-            StringBuilder backDuration = new StringBuilder();
-            if (backDurationTimeDays > 0) {
-                backDuration.append(backDurationTimeDays + " days ");
-            }
-
-            if ((backDurationTimeHours - backDurationTimeDays * 24) > 0) {
-                backDuration.append((backDurationTimeHours - backDurationTimeDays * 24) + " hours");
-            }
-            backDurationTimeTextView.setText(backDuration.toString());
-
-            initTimerProgress();
+            initDelays();
 
             String stuffUrl = stuffItem.getStuff().getImgUrl();
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -241,43 +227,47 @@ public class StuffDetailsFragment extends Fragment {
         return view;
     }
 
-    private void initLoanDurationTextView() {
-        DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.FRANCE);
+    private void initDelays() {
+        viewModel.initDelays(stuffItem.getStuff(), new Callback<Void>() {
+            @Override
+            public void onCallback(Void result) {
 
-        initialLoanDateTextView.setText(String.format("%s%s", getString(R.string.loanded), dateFormat.format(stuffItem.getStuff().getInitialLoanDateTimestamp())));
-        if (stuffItem.getStuff().getAdditionalDelay() == 0) {
-            loanDurationTextView.setText(getString(R.string.initialLoanDurationLabel) + timestampToDuration(stuffItem.getStuff().getBackTimeTimestamp()));
-        } else {
-            loanDurationTextView.setText(getString(R.string.initialLoanDurationLabel) + String.format("%s%s", timestampToDuration(stuffItem.getStuff().getInitialLoanDurationTimestamp()), String.format("(+ %s)", timestampToDuration(stuffItem.getStuff().getAdditionalDelay()))));
-        }
+                initTimerProgress();
+
+                DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.FRANCE);
+
+                comeBackDateTextView.setText("come back " +  dateFormat.format(stuffItem.getStuff().getBackTimeTimestamp()));
+                initialLoanDateTextView.setText(String.format("%s%s", getString(R.string.loanded), dateFormat.format(stuffItem.getStuff().getInitialLoanDateTimestamp())));
+
+                viewModel.getComeBackDuration();
+
+                if (stuffItem.getStuff().getAdditionalDelay() == 0) {
+                    loanDurationTextView.setText(getString(R.string.initialLoanDurationLabel) +viewModel.getInitialLoanDuration());
+                } else {
+                    loanDurationTextView.setText(getString(R.string.initialLoanDurationLabel) + String.format("%s%s", viewModel.getInitialLoanDuration(), String.format("(+ %s)", viewModel.getAdditionalDelay())));
+                }
+
+                viewModel.getBackDuration(new Callback<Long>() {
+                    @Override
+                    public void onCallback(Long result) {
+                        if (result <= 0) {
+                            backDurationTimeTextView.setTextColor(getContext().getColor(R.color.rv_warn));
+                            backDurationTimeTextView.setText("Watch out, you're late. You must return this object as soon as possible or ask its owner for a delay.");
+                        } else {
+                            backDurationTimeTextView.setText(viewModel.getComeBackDuration());
+                        }
+                    }
+                });
+
+            }
+        });
     }
 
-    private void refreshTimerDelay() {
-        initTimerProgress();
-    }
 
     private void initTimerProgress() {
         Stuff stuff = stuffItem.getStuff();
         CircleTimer circleTimer = new CircleTimer(backDurationProgressBar, getContext(), stuff);
         circleTimer.initTimer();
-    }
-
-
-    public String timestampToDuration(long timestamp) {
-        long hourMs = 3600000;
-        long dayMs = 86400000;
-
-        int hoursBackTime = (int) (timestamp / hourMs);
-        if (hoursBackTime > 24) {
-            int daysBackTime = (int) (timestamp / dayMs);
-            if (daysBackTime >= 31) {
-                return daysBackTime / 31 + " months";
-            } else {
-                return timestamp / dayMs + " days";
-            }
-        } else {
-            return hoursBackTime + " hours";
-        }
     }
 
 }

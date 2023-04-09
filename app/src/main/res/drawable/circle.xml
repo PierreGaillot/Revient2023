@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item android:id="@+id/circle_background">
         <shape
             android:shape="ring"
             android:thicknessRatio="48"
@@ -12,7 +13,8 @@
     <item android:id="@+id/progress_circle">
         <rotate
             android:fromDegrees="270"
-            android:toDegrees="270">
+            android:toDegrees="270"
+            tools:prodress="30">
             <shape
                 android:shape="ring"
                 android:thicknessRatio="48"
@@ -21,4 +23,6 @@
             </shape>
         </rotate>
     </item>
+
+
 </layer-list>

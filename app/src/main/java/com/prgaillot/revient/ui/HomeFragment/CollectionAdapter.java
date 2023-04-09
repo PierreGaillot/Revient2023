@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,15 +19,19 @@ import com.prgaillot.revient.R;
 import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
 import com.prgaillot.revient.ui.uiModels.StuffItemUiModel;
+import com.prgaillot.revient.utils.CircleTimer;
 
 import java.util.HashMap;
 import java.util.List;
+
+import io.grpc.Context;
 
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder> {
 
     private static final String TAG = "CollectionAdapter";
     List<StuffItemUiModel> collection;
     StuffItemAdapterClickListener stuffItemAdapterClickListener;
+    private android.content.Context context;
 
 
     public CollectionAdapter(List<StuffItemUiModel> collection, StuffItemAdapterClickListener stuffItemAdapterClickListener) {
@@ -40,11 +45,15 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         ImageView userAvatarImageView, stuffImageView;
         TextView stuffTextView;
 
+        ProgressBar timer;
+
+
         public CollectionViewHolder(@NonNull View itemView) {
             super(itemView);
             stuffImageView = itemView.findViewById(R.id.stuffListItem_imageView);
             stuffTextView = itemView.findViewById(R.id.stuffListItem_textView);
             userAvatarImageView = itemView.findViewById(R.id.stuffListItem_userAvatar_imageView);
+            timer = itemView.findViewById(R.id.stiffItem_timer_progressBar);
         }
     }
 
@@ -53,6 +62,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
     public CollectionAdapter.CollectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.stuff_list_item, parent, false);
+        context = parent.getContext();
         return new CollectionViewHolder(view);
     }
 
@@ -86,8 +96,12 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
                         .centerCrop()
                         .circleCrop()
                         .into(holder.userAvatarImageView);
+
+                CircleTimer circleTimer = new CircleTimer(holder.timer, context, stuffItem.getStuff());
+                circleTimer.initTimer();
             }
         });
+
 
 
     }

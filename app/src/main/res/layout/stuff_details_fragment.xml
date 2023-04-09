@@ -21,12 +21,12 @@
     <ProgressBar
         android:id="@+id/stuffDetails_backDuration_progressBar"
         style="@style/CircularDeterminateProgressBar"
+
         android:layout_width="320dp"
         android:layout_height="320dp"
         android:indeterminateOnly="false"
-        android:progress="30"
         android:rotation="180"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="TextView"
+        android:text="action"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,8 +57,11 @@
     <TextView
         android:id="@+id/stuffDetails_backDurationTime_textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_height="0dp"
+        android:paddingStart="96dp"
+        android:paddingEnd="96dp"
+        android:text="come back duration"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stuffDetails_action_textView" />
@@ -88,21 +91,30 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/stuffDetails_iniLoanDate_textView"
+        android:id="@+id/stuffDetails_initialLoanDate_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="initial Loan Date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stuffDetails_backDurationTime_textView" />
 
     <TextView
-        android:id="@+id/stuffDetails_loanDuration_textView"
+        android:id="@+id/stuffDetails_initialLoanDuration_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="initial Loan Duration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stuffDetails_initialLoanDate_textView" />
+
+    <TextView
+        android:id="@+id/stuffDetails_comeBackDate_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stuffDetails_iniLoanDate_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/stuffDetails_initialLoanDuration_textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

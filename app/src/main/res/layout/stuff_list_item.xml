@@ -6,10 +6,25 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
 
+    <ProgressBar
+        android:id="@+id/stiffItem_timer_progressBar"
+        style="@style/CircularDeterminateProgressBar"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:indeterminateOnly="false"
+        android:rotation="180"
+        android:scaleX="1.4"
+        android:scaleY="1.4"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/stuffListItem_imageView" />
+
     <ImageView
         android:id="@+id/stuffListItem_imageView"
         android:layout_width="88dp"
         android:layout_height="88dp"
+        android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,13 +42,11 @@
         android:id="@+id/stuffListItem_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:ems="5"
-        android:maxEms="5"
         android:maxLines="1"
-        android:minEms="2"
         android:text="TextViewTextViewTextViewTextViewTextViewTextView"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/stuffListItem_imageView" />

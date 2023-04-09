@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.prgaillot.revient.R;
@@ -31,29 +32,17 @@ import java.util.List;
  */
 public class HorStuffListFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String TAG = "HorStuffListFrag";
     private static final String LIST_NAME_ARG_PARAM = "listName";
     private static final String ARG_PARAM2 = "collection";
-    private static final String TAG = "HorStuffListFrag";
     CollectionAdapter collectionAdapter;
 
     RecyclerView listRecyclerView;
     TextView listNameTextView;
 
-    // TODO: Rename and change types of parameters
     private List<StuffItemUiModel> itemUiModels;
     private String listName;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param itemUiModels Parameter 1.
-     * @param listName Parameter 2.
-     * @return A new instance of fragment HorStuffListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HorStuffListFragment newInstance(List<StuffItemUiModel> itemUiModels, String listName) {
         HorStuffListFragment fragment = new HorStuffListFragment();
         Bundle args = new Bundle();

@@ -80,20 +80,28 @@ public class NewStuffActivity extends AppCompatActivity {
         durationSeekbar.setMax(12);
         durationSeekbar.setProgress(3, true);
 
+        long second = 1000;
+        long min = second * 60;
+        long hour = min * 60;
+        long day = hour * 24;
+        long week  = day * 7;
+        long month = day *30;
+        long year = day * 365;
+
         List<DurationObj> durationList = new ArrayList<>();
-        durationList.add(new DurationObj("2 heures", 7200000L));
-        durationList.add(new DurationObj("6 heures", 21600000L));
-        durationList.add(new DurationObj("12 heures", 43200000L));
-        durationList.add(new DurationObj("1 journée", 86400000L));
-        durationList.add(new DurationObj("2 jours", 172800000L));
-        durationList.add(new DurationObj("1 semaine", 604800000L));
-        durationList.add(new DurationObj("2 semaines", 1209600000L));
-        durationList.add(new DurationObj("3 semaines", 1814400000L));
-        durationList.add(new DurationObj("1 mois", 2419200000L));
-        durationList.add(new DurationObj("2 mois", 4838400000L));
-        durationList.add(new DurationObj("4 mois", 9676800000L));
-        durationList.add(new DurationObj("6 mois", 19353600000L));
-        durationList.add(new DurationObj("1an", 94608000000L));
+        durationList.add(new DurationObj("2 heures", 2*hour));
+        durationList.add(new DurationObj("6 heures", 6*hour));
+        durationList.add(new DurationObj("12 heures", 12*hour));
+        durationList.add(new DurationObj("1 journée", day));
+        durationList.add(new DurationObj("2 jours", 2*day));
+        durationList.add(new DurationObj("1 semaine", week));
+        durationList.add(new DurationObj("2 semaines", 2*week));
+        durationList.add(new DurationObj("3 semaines", 3*week));
+        durationList.add(new DurationObj("1 mois", month));
+        durationList.add(new DurationObj("2 mois", 2*month));
+        durationList.add(new DurationObj("4 mois", 4*month));
+        durationList.add(new DurationObj("6 mois", 6*month));
+        durationList.add(new DurationObj("1an", year));
 
 
         durationTextView.setText(durationList.get(durationSeekbar.getProgress()).getName());
