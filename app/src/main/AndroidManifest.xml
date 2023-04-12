@@ -7,14 +7,17 @@
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:requestLegacyExternalStorage="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_reviens"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Revient"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.FriendsActivity.FriendsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Revient.NoActionBar"/>
         <activity
             android:name=".ui.MainActivity.MainActivity"
             android:exported="true"
@@ -22,15 +25,13 @@
             android:theme="@style/Theme.Revient.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.NewStuffActivity.NewStuffActivity"
-            android:exported="false" >
-
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>

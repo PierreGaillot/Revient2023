@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/friends_nav_graph"
+    app:startDestination="@id/researchFriendsListFragment">
+    <fragment
+        android:id="@+id/researchFriendsListFragment"
+        android:name="com.prgaillot.revient.ui.FriendsActivity.ResearchFriendsListFragment.ResearchFriendsListFragment"
+        android:label="ResearchFriendsListFragment" >
+        <action
+            android:id="@+id/action_researchFriendsListFragment_to_profileFragment2"
+            app:destination="@id/profileFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment2"
+        android:name="com.prgaillot.revient.ui.ProfileFragment.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment2_to_researchFriendsListFragment"
+            app:destination="@id/researchFriendsListFragment" />
+    </fragment>
+</navigation>

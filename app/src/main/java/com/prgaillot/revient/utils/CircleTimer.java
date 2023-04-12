@@ -35,8 +35,10 @@ public class CircleTimer {
                 public void onCallback(Integer result) {
                     String name = stuff.getDisplayName();
                     if (result <= 0) {
-                        Log.d(TAG, "stuff " + stuff.getDisplayName() + " : " + result);
+                        Log.d(TAG, "stuff late => " + name + " : " + result);
                         circleTimer.setProgressTintList(ColorStateList.valueOf(context.getColor(R.color.rv_warn)));
+                    } else {
+                        Log.d(TAG, "stuff => " + name + " : " + result);
                     }
                     circleTimer.setProgress(result, true);
                 }

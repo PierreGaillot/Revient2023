@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/HomeFragment">
+    <include app:graph="@navigation/friends_nav_graph"/>
 
     <fragment
         android:id="@+id/HomeFragment"
@@ -23,6 +24,9 @@
         <action
             android:id="@+id/action_HomeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_friendsActivity"
+            app:destination="@id/friendsActivity" />
     </fragment>
     <activity
         android:id="@+id/newStuffActivity"
@@ -46,4 +50,8 @@
             android:id="@+id/action_profileFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
     </fragment>
+    <activity
+        android:id="@+id/friendsActivity"
+        android:name="com.prgaillot.revient.ui.FriendsActivity.FriendsActivity"
+        android:label="FriendsActivity" />
 </navigation>

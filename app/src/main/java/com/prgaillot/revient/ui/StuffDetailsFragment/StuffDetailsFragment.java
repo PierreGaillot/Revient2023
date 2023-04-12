@@ -43,8 +43,6 @@ public class StuffDetailsFragment extends Fragment {
     StuffItemUiModel stuffItem;
     private String TAG = "StuffDetailsFragment";
 
-    public StuffDetailsFragment() {
-    }
 
     ImageView stuffImageView;
     TextView displayNameTextView, actionTextView, backDurationTimeTextView, initialLoanDateTextView, loanDurationTextView, comeBackDateTextView;
@@ -54,6 +52,8 @@ public class StuffDetailsFragment extends Fragment {
     Button actionBtn, deleteBtn;
     BottomSheetDialog addDelayBottomSheetDial, deleteStuffBottomSheetDial;
 
+    public StuffDetailsFragment() {
+    }
 
     @Nullable
     @Override

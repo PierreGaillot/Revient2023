@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ import com.prgaillot.revient.databinding.FragmentHomeBinding;
 import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
 import com.prgaillot.revient.ui.HomeFragment.HorStuffListFragment.HorStuffListFragment;
+import com.prgaillot.revient.ui.MainActivity.MainActivity;
 import com.prgaillot.revient.ui.uiModels.StuffItemUiModel;
 import com.prgaillot.revient.utils.Callback;
 
@@ -80,7 +82,17 @@ public class HomeFragment extends Fragment {
     private void initFriendsList() {
         RecyclerView friendsRecyclerView = binding.getRoot().findViewById(R.id.rv_friends);
         friendsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        friendsAdapter = new FriendsAdapter(new ArrayList<>());
+        friendsAdapter = new FriendsAdapter(new ArrayList<>(), new FriendAdapterClickListener() {
+            @Override
+            public void onFriendClick(User user) {
+                ((MainActivity) getActivity()).openProfileFragment(user);
+            }
+        }, new AddFriendsAdapterClickListener() {
+            @Override
+            public void navToFriendsActivity() {
+                ((MainActivity) getActivity()).navToFriendsActivity();
+            }
+        });
         friendsRecyclerView.setAdapter(friendsAdapter);
         refreshFriendsList();
     }

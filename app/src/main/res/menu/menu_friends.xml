@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.prgaillot.revient.ui.FriendsActivity.FriendsActivity">
+
+    <item
+        android:id="@+id/action_friends_research"
+        android:title="@string/action_friends_research" />
+    <item
+        android:id="@+id/action_friends_pending_request"
+        android:title="@string/action_friends_pending_request" />
+    <item
+        android:id="@+id/action_friendsList"
+        android:title="@string/action_friendsList" />
+
+</menu>

@@ -7,11 +7,31 @@
     android:layout_marginStart="@dimen/friend_list_margin"
     android:layout_marginEnd="@dimen/friend_list_margin">
 
+    <Button
+        android:id="@+id/friendItemList_addFriends_button"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/rv_secondary_light"
+        android:visibility="visible"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:iconGravity="textStart"
+        app:icon="@drawable/ic_sharp_add_24"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
-        android:id="@+id/friend_imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/friendItemList_friend_imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

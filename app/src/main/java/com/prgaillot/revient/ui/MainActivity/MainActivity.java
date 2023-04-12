@@ -115,8 +115,16 @@ public class MainActivity extends AppCompatActivity {
             startSignInActivity();
             return true;
         }
+        if(id == R.id.action_friends){
+                navToFriendsActivity();
+                return  true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void navToFriendsActivity() {
+        navController.navigate(R.id.action_HomeFragment_to_friendsActivity);
     }
 
     @Override
@@ -207,5 +215,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void openHomeFragment() {
         navController.navigate(R.id.action_stuffDetailsFragment_to_HomeFragment);
+    }
+
+
+    public void openProfileFragment(User user) {
+        Bundle userBundle = new Bundle();
+        userBundle.putSerializable("user", (Serializable) user);
+        navController.navigate(R.id.action_HomeFragment_to_profileFragment, userBundle);
     }
 }

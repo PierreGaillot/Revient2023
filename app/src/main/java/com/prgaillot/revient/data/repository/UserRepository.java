@@ -207,12 +207,49 @@ public class UserRepository {
             @Override
             public void onCallback(List<Stuff> stuffList) {
                 for (Stuff stuff : stuffList) {
-                    if(stuff.getBorrowerId() != null){
+                    if (stuff.getBorrowerId() != null) {
                         loanedStuffList.add(stuff);
                     }
                 }
                 callback.onCallback(loanedStuffList);
             }
         });
+    }
+
+    public void checkIfUserIsFriend(String friendId, Callback<Boolean> callback) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        getUser(currentUser.getUid(), new Callback<User>() {
+            @Override
+            public void onCallback(User result) {
+                if (result.getFriendsUid().contains(friendId)) {
+                    callback.onCallback(true);
+                } else {
+                    callback.onCallback(false);
+                }
+            }
+        });
+    }
+
+    public void researchUsersByString(String newText, Callback<List<User>> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(USER_COLLECTION)
+                .whereGreaterThanOrEqualTo("displayName", newText)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        List<User> usersList = new ArrayList<>();
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                User user = new User(snapshot.getId(), snapshot.getString("displayName"), Uri.parse(snapshot.getString("imgUrl")), snapshot.getString("email"));
+                                usersList.add(user);
+                            }
+                            if(queryDocumentSnapshots.size() == usersList.size()){
+                                callback.onCallback(usersList);
+                            }
+                        }
+                    }
+                });
     }
 }

@@ -2,14 +2,16 @@ package com.prgaillot.revient.domain.models;
 
 import android.net.Uri;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class User {
+public class User implements Serializable {
 
     private String uid;
     private String displayName;
+
     private Uri imgUrl;
     private String email;
 
@@ -21,6 +23,9 @@ public class User {
         this.displayName = displayName;
         this.imgUrl = imgUrl;
         this.email = email;
+    }
+
+    public User() {
     }
 
     public String getUid() {
