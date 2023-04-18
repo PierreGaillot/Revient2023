@@ -33,7 +33,7 @@ public class NewStuffActivityViewModel extends ViewModel {
     public void prepareFriendsSearchList(List<User> friends, Callback<HashMap<String, String>> callback){
         HashMap<String, String> outputFriends = new HashMap<>();
         for (User friend: friends) {
-            outputFriends.put(friend.getDisplayName(), friend.getUid());
+            outputFriends.put( friend.getUid(), friend.getDisplayName());
             if(friends.size() == outputFriends.size()) callback.onCallback(outputFriends);
         }
     }

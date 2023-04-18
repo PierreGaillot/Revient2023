@@ -14,9 +14,11 @@ import android.view.ViewGroup;
 
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.domain.models.User;
+import com.prgaillot.revient.ui.FriendsActivity.FriendsActivity;
 import com.prgaillot.revient.ui.FriendsActivity.ResearchFriendsListFragment.AddFriendAdapterClickListener;
 import com.prgaillot.revient.ui.FriendsActivity.ResearchFriendsListFragment.ResearchFriendsListAdapter;
 import com.prgaillot.revient.ui.FriendsActivity.ResearchFriendsListFragment.UserAdapterClickListener;
+import com.prgaillot.revient.ui.MainActivity.MainActivity;
 import com.prgaillot.revient.ui.uiModels.UserWithStatus;
 import com.prgaillot.revient.utils.Callback;
 
@@ -48,12 +50,13 @@ public class FriendsListFragment extends Fragment {
         adapter = new ResearchFriendsListAdapter(usersWithStatus, new UserAdapterClickListener() {
             @Override
             public void onUserClick(User user) {
-
+                ((FriendsActivity)getActivity()).openProfileFragment(user);
             }
         }, new AddFriendAdapterClickListener() {
             @Override
             public void onAddFriendClick(User user) {
-
+                // USELESS
+                ((FriendsActivity)getActivity()).sendFriendRequest(user);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -61,9 +64,6 @@ public class FriendsListFragment extends Fragment {
     }
 
     private void refreshFriendsList(List<UserWithStatus> newUserWithStatus) {
-//        adapter.update(newUserWithStatus);
-
-
         usersWithStatus = new ArrayList<>();
         usersWithStatus.addAll(newUserWithStatus);
         adapter.update(usersWithStatus);

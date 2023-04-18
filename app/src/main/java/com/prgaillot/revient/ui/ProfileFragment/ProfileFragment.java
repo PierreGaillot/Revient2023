@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,8 +62,33 @@ public class ProfileFragment extends Fragment {
                         friendActionBtn.setBackgroundColor(getContext().getColor(R.color.rv_warn));
                         friendActionBtn.setCompoundDrawables(deleteFriendIcon, null, null,null);
                         friendActionBtn.setText("remove friends");
+
+                        friendActionBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                viewModel.removeFriend(user.getUid(), new Callback<Void>() {
+                                    @Override
+                                    public void onCallback(Void result) {
+                                        Toast.makeText(getContext(), user.getDisplayName() + " is remove from friends.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
+
+
                     } else {
                         friendActionBtn.setText("add to friends");
+                        friendActionBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                viewModel.sendFriendRequest(user.getUid(), new Callback<Void>() {
+                                    @Override
+                                    public void onCallback(Void result) {
+                                        Toast.makeText(getContext(), "Request has be send", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             });

@@ -3,43 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-
-    >
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/RFIL_userImage_imageView"
+        android:id="@+id/friendRequestItem_profilImg_imageView"
         android:layout_width="@dimen/userItemList_img_size"
         android:layout_height="@dimen/userItemList_img_size"
-        android:layout_marginStart="@dimen/userItemLis_margin_ver"
         android:layout_marginTop="@dimen/userItemList_img_margin_hor"
         android:layout_marginBottom="@dimen/userItemList_img_margin_hor"
+        android:layout_marginStart="@dimen/userItemLis_margin_ver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/RFIL_iconButton_btn"
+        android:id="@+id/friendRequestItem_no_btn"
         style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:contentDescription="@string/large_text"
-        app:icon="@drawable/baseline_person_add_24"
+        android:layout_marginEnd="@dimen/userItemLis_margin_ver"
+        app:icon="@drawable/baseline_close_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <Button
+        android:id="@+id/friendRequestItem_yes_btn"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/outline_check_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/friendRequestItem_no_btn"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/RFIL_userDisplayName_textView"
+        android:id="@+id/friendRequestItem_diplayName_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/userItemLis_margin_gap"
         android:text="TextView"
-        android:textColor="@android:color/secondary_text_light"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/RFIL_userImage_imageView"
+        app:layout_constraintStart_toEndOf="@+id/friendRequestItem_profilImg_imageView"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

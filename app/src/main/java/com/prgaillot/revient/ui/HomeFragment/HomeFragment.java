@@ -49,27 +49,30 @@ public class HomeFragment extends Fragment {
         homeFragmentViewModel = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
         fragmentManager = getParentFragmentManager();
 
-        homeFragmentViewModel.getCurrentUserData(new Callback<User>() {
-            @Override
-            public void onCallback(User user) {
-                initFriendsList();
-                homeFragmentViewModel.friendsList.observe(getViewLifecycleOwner(), new Observer<List<User>>() {
-                    @Override
-                    public void onChanged(List<User> userList) {
-                        initStuffCollection();
-                        initUserStuffBorrowedCollection();
-                        initUserLoanedStuffCollection();
-                    }
-                });
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            homeFragmentViewModel.getCurrentUserData(new Callback<User>() {
+                @Override
+                public void onCallback(User user) {
+                    initFriendsList();
+                    homeFragmentViewModel.friendsList.observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+                        @Override
+                        public void onChanged(List<User> userList) {
+                            initStuffCollection();
+                            initUserStuffBorrowedCollection();
+                            initUserLoanedStuffCollection();
+                        }
+                    });
 
-            }
-        });
+                }
+            });
+        }
+
 
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+//        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

@@ -116,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if(id == R.id.action_friends){
-                navToFriendsActivity();
-                return  true;
+            navToFriendsActivity();
+            return  true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             // Successfully signed in
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.logged_as) + firebaseUser.getDisplayName(), Toast.LENGTH_LONG).show();
-            User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl(), firebaseUser.getEmail());
+            User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl()), firebaseUser.getEmail());
 
             viewModel.userIsRegistered(firebaseUser.getUid(), new Callback<Boolean>() {
                 @Override
@@ -186,7 +186,12 @@ public class MainActivity extends AppCompatActivity {
                         });
                     } else {
                         Log.d(TAG, "new user is created : " + user.getDisplayName());
-                        viewModel.createUser(user);
+                        viewModel.createUser(user, new Callback<Void>() {
+                            @Override
+                            public void onCallback(Void result) {
+                                Toast.makeText(getBaseContext(), "user " + user.getDisplayName() + " was created.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         userLogId = user.getUid();
                     }
                 }

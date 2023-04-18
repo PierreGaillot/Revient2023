@@ -97,6 +97,7 @@ public class ResearchFriendsListFragment extends Fragment {
         }, new AddFriendAdapterClickListener() {
             @Override
             public void onAddFriendClick(User user) {
+                ((FriendsActivity)getActivity()).sendFriendRequest(user);
             }
         });
 

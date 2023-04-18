@@ -53,6 +53,7 @@ public class NewStuffActivity extends AppCompatActivity {
     Button submitBtn, photoBtn;
     ImageView image;
 
+    List<String>  friendsIdList, friendNameList;
     SeekBar durationSeekbar;
     private NewStuffActivityViewModel viewModel;
     private HashMap<String, String> friendsHashMap;
@@ -117,7 +118,11 @@ public class NewStuffActivity extends AppCompatActivity {
                             @Override
                             public void onCallback(HashMap<String, String> result) {
                                 friendsHashMap = result;
-                                List<String> friendNameList = new ArrayList<>(result.keySet());
+                                friendNameList = new ArrayList<>();
+                                friendsIdList = new ArrayList<>(result.keySet());
+                                for (String s : friendsIdList) {
+                                    friendNameList.add(friendsHashMap.get(s));
+                                }
                                 ArrayAdapter<String> friendListAdapter = new ArrayAdapter<>(getBaseContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, friendNameList);
                                 Log.d(TAG, friendNameList.toString());
                                 borrowerACTextView.setAdapter(friendListAdapter);
@@ -128,7 +133,6 @@ public class NewStuffActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 askPermissionsCamera();
-
                             }
                         });
 
@@ -139,7 +143,7 @@ public class NewStuffActivity extends AppCompatActivity {
                                 if (displayNameEditText.getText() != null) {
                                     Stuff stuff = new Stuff(user.getUid(), displayNameEditText.getText().toString());
                                     if (!borrowerACTextView.getText().toString().isEmpty() && !friendsHashMap.isEmpty()) {
-                                        stuff.setBorrowerId(friendsHashMap.get(borrowerACTextView.getText().toString()));
+                                        stuff.setBorrowerId(friendsIdList.get(friendNameList.indexOf(borrowerACTextView.getText().toString())));
                                     }
                                     stuff.setInitialLoanDurationTimestamp(durationList.get(durationSeekbar.getProgress()).getValue());
                                     viewModel.createStuff(stuff, new Callback<String>() {

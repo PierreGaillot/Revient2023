@@ -35,7 +35,7 @@
         tools:layout="@layout/activity_new_stuff" />
     <fragment
         android:id="@+id/stuffDetailsFragment"
-        android:name="com.prgaillot.revient.ui.StuffDetailsFragment.StuffDetailsFragment"
+        android:name="com.prgaillot.revient.ui.NewStuffActivity.StuffDetailsFragment.StuffDetailsFragment"
         android:label="StuffDetailsFragment" >
         <action
             android:id="@+id/action_stuffDetailsFragment_to_HomeFragment"

@@ -3,4 +3,9 @@
     <dimen name="friend_list_margin">8dp</dimen>
     <dimen name="friend_item_size">56dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <!--    User Item List Size -->
+    <dimen name="userItemList_img_size">60dp</dimen>
+    <dimen name="userItemList_img_margin_hor">8dp</dimen>
+    <dimen name="userItemLis_margin_ver">24dp</dimen>
+    <dimen name="userItemLis_margin_gap">16dp</dimen>
 </resources>

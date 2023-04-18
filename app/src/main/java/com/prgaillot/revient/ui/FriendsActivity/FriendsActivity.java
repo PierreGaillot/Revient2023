@@ -7,11 +7,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
-import com.google.android.material.tabs.TabLayout;
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.databinding.ActivityFriendsBinding;
 import com.prgaillot.revient.domain.models.User;
@@ -22,9 +21,6 @@ import java.util.List;
 
 public class FriendsActivity extends AppCompatActivity {
 
-    TabLayout tabLayout;
-    ViewPager2 viewPager;
-    FriendsActivityViewPagerAdapter viewPagerAdapter;
 
     Toolbar toolbar;
     FriendsActivityViewModel viewModel;
@@ -33,6 +29,8 @@ public class FriendsActivity extends AppCompatActivity {
     List<User> users = new ArrayList<>();
     private NavController navController;
 
+    User currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,29 +38,7 @@ public class FriendsActivity extends AppCompatActivity {
         com.prgaillot.revient.databinding.ActivityFriendsBinding binding = ActivityFriendsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.friendsActivityToolbar);
-
-        tabLayout = binding.FriendsActivityTabLayout;
-        viewPager = binding.FriendsActivityViewPager;
-        viewPagerAdapter = new FriendsActivityViewPagerAdapter(this);
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_friends_research);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_friend);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
@@ -70,14 +46,10 @@ public class FriendsActivity extends AppCompatActivity {
         viewModel.getCurrentUser(new Callback<User>() {
             @Override
             public void onCallback(User result) {
-                users.add(result);
+                currentUser = result;
                 initFriendsRList();
             }
         });
-
-
-
-
     }
 
     private void initFriendsRList() {
@@ -86,6 +58,15 @@ public class FriendsActivity extends AppCompatActivity {
     public void openProfileFragment(User user) {
         Bundle userBundle = new Bundle();
         userBundle.putSerializable("user", user);
-        navController.navigate(R.id.action_researchFriendsListFragment_to_profileFragment2, userBundle);
+        navController.navigate(R.id.action_friendsContentFragment_to_profileFragment2, userBundle);
+    }
+
+    public void sendFriendRequest(User user) {
+        viewModel.sendFriendRequest(currentUser.getUid(),user.getUid(),  new Callback<Void>() {
+            @Override
+            public void onCallback(Void result) {
+                Toast.makeText(getBaseContext(), "Request has be send", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

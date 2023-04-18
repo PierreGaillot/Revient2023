@@ -118,6 +118,8 @@
     <string name="action_friends_pending_request">friends pending request</string>
     <string name="action_friendsList">friends</string>
     <string name="friendsTabDesc">the friends tabs description</string>
+    <string name="error_authentication_canceled">error_authentication_canceled</string>
+    <string name="error_no_internet">error_no_internet</string>
 
 
 </resources>

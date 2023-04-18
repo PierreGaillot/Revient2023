@@ -20,13 +20,13 @@ public class MainActivityViewModel extends ViewModel {
     private final UserIsRegisteredUseCase userIsRegisteredUseCase = UserIsRegisteredUseCase.instance;
 
     private final GetUserStuffCollectionUseCase getUserStuffCollectionUseCase = GetUserStuffCollectionUseCase.instance;
-    void createUser(User user){
-        createUserUseCase.createUser(user);
+    void createUser(User user, Callback<Void> callback){
+        createUserUseCase.createUser(user, callback);
     }
 
-    void getUserFriends(String userUid, Callback<List<User>> callback) {
-        getUserFriendsUseCase.getUserFriends(userUid, callback);
-    }
+//    void getUserFriends(String userUid, Callback<List<User>> callback) {
+//        getUserFriendsUseCase.getUserFriends(userUid, callback);
+//    }
 
     void getCurrentUserData(Callback<User> callback){
         getCurrentUserDataUseCase.getCurrentUserData(callback);
