@@ -1,5 +1,7 @@
 package com.prgaillot.revient.domain.models;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,6 @@ public class User implements Serializable {
 
     private String uid;
     private String displayName;
-    @Nullable
     private String imgUrl;
     private String email;
 
@@ -20,13 +21,12 @@ public class User implements Serializable {
     public User(String uid, String displayName, String imgUrl, String email) {
         this.uid = uid;
         this.displayName = displayName;
-        this.imgUrl = imgUrl;
+        this.email = email;
 
-        if(imgUrl == null){
+        if(imgUrl.equals("null")){
             this.imgUrl ="https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg=";
         } else {
-            this.email = email;
-
+            this.imgUrl = imgUrl;
         }
     }
 
@@ -50,11 +50,11 @@ public class User implements Serializable {
     }
 
     public String getImgUrl() {
-        if (imgUrl != null) {
+//        if (imgUrl == null) {
+//            return "https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg=";
+//        } else {
             return imgUrl;
-        } else {
-            return "https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg=";
-        }
+//        }
     }
 
     public void setImgUrl(String imgUrl) {
