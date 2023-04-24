@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment {
             homeFragmentViewModel.getCurrentUserData(new Callback<User>() {
                 @Override
                 public void onCallback(User user) {
+                    initHelloUser(user.getDisplayName());
                     initFriendsList();
                     homeFragmentViewModel.friendsList.observe(getViewLifecycleOwner(), new Observer<List<User>>() {
                         @Override
@@ -69,6 +70,11 @@ public class HomeFragment extends Fragment {
 
 
         return binding.getRoot();
+    }
+
+    private void initHelloUser(String userDisplayName) {
+        TextView helloTextView = binding.homeFragHelloTextView;
+        helloTextView.setText("Hello " +  userDisplayName + " !");
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -124,7 +130,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void refreshStuffCollection() {
-
         homeFragmentViewModel.refreshUserStuffCollection();
         homeFragmentViewModel.userStuffCollection.observe(getViewLifecycleOwner(), new Observer<List<Stuff>>() {
             @Override
@@ -185,7 +190,7 @@ public class HomeFragment extends Fragment {
     public void initUserLoanedStuffCollection() {
         HorStuffListFragment horStuffListFragment = new HorStuffListFragment();
         fragmentManager.beginTransaction()
-                .add(R.id.fragment_stuffLoaned_container_view, horStuffListFragment, null)
+                .add(R.id.fragmentProfile_stuffBorrowed_container_view, horStuffListFragment, null)
                 .commit();
         refreshUserLoanedStuffCollection();
     }
@@ -208,7 +213,7 @@ public class HomeFragment extends Fragment {
                             HorStuffListFragment horStuffListFragment = new HorStuffListFragment();
                             horStuffListFragment.setArguments(collectionBundle);
                             fragmentManager.beginTransaction()
-                                    .replace(R.id.fragment_stuffLoaned_container_view, horStuffListFragment, null)
+                                    .replace(R.id.fragmentProfile_stuffBorrowed_container_view, horStuffListFragment, null)
                                     .commit();
                         }
                     }

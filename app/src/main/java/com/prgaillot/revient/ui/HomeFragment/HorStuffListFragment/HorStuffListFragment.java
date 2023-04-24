@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.prgaillot.revient.R;
@@ -24,12 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HorStuffListFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
+
 public class HorStuffListFragment extends Fragment {
 
     private static final String TAG = "HorStuffListFrag";
@@ -39,6 +33,7 @@ public class HorStuffListFragment extends Fragment {
 
     RecyclerView listRecyclerView;
     TextView listNameTextView;
+
 
     private List<StuffItemUiModel> itemUiModels;
     private String listName;
@@ -71,6 +66,15 @@ public class HorStuffListFragment extends Fragment {
             itemUiModels = (List<StuffItemUiModel>) getArguments().getSerializable(ARG_PARAM2);
             listNameTextView.setText(format("%s (%d)", listName, itemUiModels.size()));
             collectionAdapter.update(itemUiModels);
+
+
+            listNameTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, listName);
+                    ((MainActivity) getActivity()).openStuffCollectionFragment(listName, itemUiModels);
+                }
+            });
         }
 
 

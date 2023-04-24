@@ -1,4 +1,4 @@
-package com.prgaillot.revient.ui.NewStuffActivity.StuffDetailsFragment;
+package com.prgaillot.revient.ui.StuffDetailsFragment;
 
 import androidx.lifecycle.ViewModel;
 

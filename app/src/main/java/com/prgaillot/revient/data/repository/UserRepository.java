@@ -1,4 +1,4 @@
-package com.prgaillot.revient.domain.usecases.repository;
+package com.prgaillot.revient.data.repository;
 
 import android.util.Log;
 

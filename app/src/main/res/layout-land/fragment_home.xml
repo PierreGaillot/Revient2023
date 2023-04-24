@@ -41,7 +41,7 @@
             tools:layout="@layout/fragment_hor_stuff_list"/>
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_stuffLoaned_container_view"
+            android:id="@+id/fragmentProfile_stuffBorrowed_container_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_hor_stuff_list"/>

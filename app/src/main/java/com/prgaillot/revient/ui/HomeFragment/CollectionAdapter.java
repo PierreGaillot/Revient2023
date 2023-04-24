@@ -44,7 +44,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
 
         ImageView userAvatarImageView, stuffImageView;
         TextView stuffTextView;
-
         ProgressBar timer;
 
 

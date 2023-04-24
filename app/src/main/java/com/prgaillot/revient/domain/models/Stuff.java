@@ -8,7 +8,7 @@ public class Stuff {
     String displayName;
     String ownerId;
     @Nullable
-    String borrowerId;
+    String borrowerId, borrowerEmail;
     @Nullable
     long creationTimeStamp, initialLoanDateTimestamp, initialLoanDurationTimestamp, additionalDelay;
 
@@ -95,5 +95,14 @@ public class Stuff {
 
     public void setAdditionalDelay(long additionalDelay) {
         this.additionalDelay = this.additionalDelay + additionalDelay;
+    }
+
+    @Nullable
+    public String getBorrowerEmail() {
+        return borrowerEmail;
+    }
+
+    public void setBorrowerEmail(@Nullable String borrowerEmail) {
+        this.borrowerEmail = borrowerEmail;
     }
 }

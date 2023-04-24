@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/HomeFragment">
-    <include app:graph="@navigation/friends_nav_graph"/>
 
     <fragment
         android:id="@+id/HomeFragment"
@@ -27,6 +26,9 @@
         <action
             android:id="@+id/action_HomeFragment_to_friendsActivity"
             app:destination="@id/friendsActivity" />
+        <action
+            android:id="@+id/action_HomeFragment_to_collectionFragment"
+            app:destination="@id/collectionFragment" />
     </fragment>
     <activity
         android:id="@+id/newStuffActivity"
@@ -35,7 +37,7 @@
         tools:layout="@layout/activity_new_stuff" />
     <fragment
         android:id="@+id/stuffDetailsFragment"
-        android:name="com.prgaillot.revient.ui.NewStuffActivity.StuffDetailsFragment.StuffDetailsFragment"
+        android:name="com.prgaillot.revient.ui.StuffDetailsFragment.StuffDetailsFragment"
         android:label="StuffDetailsFragment" >
         <action
             android:id="@+id/action_stuffDetailsFragment_to_HomeFragment"
@@ -54,4 +56,9 @@
         android:id="@+id/friendsActivity"
         android:name="com.prgaillot.revient.ui.FriendsActivity.FriendsActivity"
         android:label="FriendsActivity" />
+    <fragment
+        android:id="@+id/collectionFragment"
+        android:name="com.prgaillot.revient.ui.CollectionFragment.CollectionFragment"
+        android:label="fragment_collection"
+        tools:layout="@layout/fragment_collection" />
 </navigation>

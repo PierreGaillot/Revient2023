@@ -1,65 +1,49 @@
 package com.prgaillot.revient.ui.NewStuffActivity;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.databinding.ActivityNewStuffBinding;
-import com.prgaillot.revient.domain.models.DurationObj;
-import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
-import com.prgaillot.revient.ui.MainActivity.MainActivity;
+import com.prgaillot.revient.ui.NewStuffActivity.NewSuffFragment.NewStuffFragment;
 import com.prgaillot.revient.utils.Callback;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 public class NewStuffActivity extends AppCompatActivity {
-
-    TextView durationTextView;
-    AutoCompleteTextView borrowerACTextView;
-    EditText displayNameEditText;
-    Button submitBtn, photoBtn;
-    ImageView image;
-
-    List<String>  friendsIdList, friendNameList;
-    SeekBar durationSeekbar;
+    private static final String TAG = "NewStuffActivity";
+    Button loanByEmailBtn, loanToFriend;
     private NewStuffActivityViewModel viewModel;
-    private HashMap<String, String> friendsHashMap;
-    private final int CAMERA_REQUEST_CODE = 102;
-    private final int PERMISSION_CAMERA_REQUEST_CODE = 101;
-    Bitmap photo;
+
+    BottomSheetDialog loanToBottomSheetDial;
+    private View loanToBSDView;
+    private NavController navController;
+    private AppBarConfiguration appBarConfiguration;
+    private User borrower;
+
+    Bundle userBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,185 +51,67 @@ public class NewStuffActivity extends AppCompatActivity {
         com.prgaillot.revient.databinding.ActivityNewStuffBinding binding = ActivityNewStuffBinding.inflate(getLayoutInflater());
         viewModel = new ViewModelProvider(this).get(NewStuffActivityViewModel.class);
 
+        userBundle = new Bundle();
+        userBundle = getIntent().getExtras();
+
+
+
         View view = binding.getRoot();
         setContentView(view);
 
-        displayNameEditText = view.findViewById(R.id.newStuff_editTextText_displayName);
-        submitBtn = view.findViewById(R.id.newStuff_btn_submit);
-        borrowerACTextView = view.findViewById(R.id.newStuff_borrower_AutoCompleteTV);
-        photoBtn = view.findViewById(R.id.newStuff_photo_btn);
-        image = view.findViewById(R.id.newStuff_imageView);
-        durationTextView = view.findViewById(R.id.delaySelection_textView);
-        durationSeekbar = view.findViewById(R.id.delaySelection_seekBar);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_newStuff);
 
-        durationSeekbar.setMax(12);
-        durationSeekbar.setProgress(3, true);
-
-        long second = 1000;
-        long min = second * 60;
-        long hour = min * 60;
-        long day = hour * 24;
-        long week  = day * 7;
-        long month = day *30;
-        long year = day * 365;
-
-        List<DurationObj> durationList = new ArrayList<>();
-        durationList.add(new DurationObj("2 heures", 2*hour));
-        durationList.add(new DurationObj("6 heures", 6*hour));
-        durationList.add(new DurationObj("12 heures", 12*hour));
-        durationList.add(new DurationObj("1 journée", day));
-        durationList.add(new DurationObj("2 jours", 2*day));
-        durationList.add(new DurationObj("1 semaine", week));
-        durationList.add(new DurationObj("2 semaines", 2*week));
-        durationList.add(new DurationObj("3 semaines", 3*week));
-        durationList.add(new DurationObj("1 mois", month));
-        durationList.add(new DurationObj("2 mois", 2*month));
-        durationList.add(new DurationObj("4 mois", 4*month));
-        durationList.add(new DurationObj("6 mois", 6*month));
-        durationList.add(new DurationObj("1an", year));
-
-
-        durationTextView.setText(durationList.get(durationSeekbar.getProgress()).getName());
-
-        viewModel.getCurrentUser(new Callback<User>() {
-            @Override
-            public void onCallback(User user) {
-
-                viewModel.getUserFriend(user.getUid(), new Callback<List<User>>() {
-                    @Override
-                    public void onCallback(List<User> result) {
-                        viewModel.prepareFriendsSearchList(result, new Callback<HashMap<String, String>>() {
-                            @Override
-                            public void onCallback(HashMap<String, String> result) {
-                                friendsHashMap = result;
-                                friendNameList = new ArrayList<>();
-                                friendsIdList = new ArrayList<>(result.keySet());
-                                for (String s : friendsIdList) {
-                                    friendNameList.add(friendsHashMap.get(s));
-                                }
-                                ArrayAdapter<String> friendListAdapter = new ArrayAdapter<>(getBaseContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, friendNameList);
-                                Log.d(TAG, friendNameList.toString());
-                                borrowerACTextView.setAdapter(friendListAdapter);
-                            }
-                        });
-
-                        photoBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                askPermissionsCamera();
-                            }
-                        });
-
-
-                        submitBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (displayNameEditText.getText() != null) {
-                                    Stuff stuff = new Stuff(user.getUid(), displayNameEditText.getText().toString());
-                                    if (!borrowerACTextView.getText().toString().isEmpty() && !friendsHashMap.isEmpty()) {
-                                        stuff.setBorrowerId(friendsIdList.get(friendNameList.indexOf(borrowerACTextView.getText().toString())));
-                                    }
-                                    stuff.setInitialLoanDurationTimestamp(durationList.get(durationSeekbar.getProgress()).getValue());
-                                    viewModel.createStuff(stuff, new Callback<String>() {
-                                        @Override
-                                        public void onCallback(String result) {
-                                            createImgRef(result);
-                                            Toast.makeText(getBaseContext(), stuff.getDisplayName() + "has been added", Toast.LENGTH_SHORT).show();
-                                            Intent mainActIntent = new Intent(getBaseContext(), MainActivity.class);
-                                            startActivity(mainActIntent);
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-
-            }
-        });
-
-
-        durationSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                durationTextView.setText(durationList.get(progress).getName());
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                durationTextView.setText(durationList.get(durationSeekbar.getProgress()).getName());
-            }
-        });
-
-
-    }
-
-
-    private void openCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA_REQUEST_CODE);
-    }
-
-    public void askPermissionsCamera() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMERA_REQUEST_CODE);
-        } else {
-            openCamera();
+        if (userBundle.getSerializable("userKey") != null) {
+            borrower = (User) userBundle.getSerializable("userKey");
+            Log.d(TAG, borrower.getDisplayName());
+            navController.setGraph(R.navigation.new_stuff_nav_graph, userBundle);
         }
+
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        loanToBottomSheetDial = new BottomSheetDialog(NewStuffActivity.this);
+        loanToBSDView = getLayoutInflater().inflate(R.layout.loan_to_bt_dialg, null, false);
+        loanByEmailBtn = loanToBSDView.findViewById(R.id.dialBtSheetLoanTo_loanToEmail_btn);
+        loanToFriend = loanToBSDView.findViewById(R.id.dialBtSheetLoanTo_loanToFriend_btn);
+        loanByEmailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loanToBottomSheetDial.dismiss();
+                Bundle isEmailBorrowerBundle = new Bundle();
+                isEmailBorrowerBundle.putBoolean("isEmailBorrowerKey", true);
+                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                int id  = navController.getCurrentDestination().getId();
+                navController.navigate(id, isEmailBorrowerBundle);
+                ft.commit();
+            }
+        });
+
+        loanToFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loanToBottomSheetDial.dismiss();
+                navController.navigate(R.id.action_newStuffFragment_to_friendsListFragment);
+            }
+        });
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_CAMERA_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openCamera();
-            } else {
-                Toast.makeText(getBaseContext(), "Permission camera is requiered", Toast.LENGTH_SHORT).show();
-            }
-        }
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_newStuff);
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST_CODE && data != null) {
-//            imgPath = data.getData().getPath();
-            Bundle bundle = data.getExtras();
-            photo = (Bitmap) bundle.get("data");
-            image.setImageBitmap(photo);
-
-        }
+    public void openLoanToBottomSheetDial() {
+        loanToBottomSheetDial.setContentView(loanToBSDView);
+        loanToBottomSheetDial.show();
     }
 
-    public void createImgRef(String stuffId) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference stuffImgRef = storageRef.child("stuffImg/" + stuffId + ".jpeg");
-        Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-        UploadTask uploadTask = stuffImgRef.putBytes(data);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getBaseContext(), "L'image à était upload !", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getBaseContext(), "Erreur de l'upload de l'image !", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+    public void onFriendClick(User user) {
+//        NewStuffFragment newStuffFragment = new NewStuffFragment(user);
+        Bundle userBundle = new Bundle();
+        userBundle.putSerializable("userKey", user);
+        navController.navigate(R.id.action_friendsListFragment_to_newStuffFragment, userBundle);
     }
-
 }

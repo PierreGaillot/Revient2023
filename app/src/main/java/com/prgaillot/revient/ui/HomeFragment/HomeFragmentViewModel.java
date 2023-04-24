@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.prgaillot.revient.data.usecases.GetUserStuffBorrowedCollectionUseCaseImpl;
 import com.prgaillot.revient.domain.models.Stuff;
 import com.prgaillot.revient.domain.models.User;
 import com.prgaillot.revient.domain.usecases.GetCurrentUserDataUseCase;

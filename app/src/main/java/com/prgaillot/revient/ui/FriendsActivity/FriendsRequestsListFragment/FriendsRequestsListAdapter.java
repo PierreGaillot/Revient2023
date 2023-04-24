@@ -84,19 +84,20 @@ public class FriendsRequestsListAdapter extends RecyclerView.Adapter<FriendsRequ
             }
         });
 
-        holder.yesBtn.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-                onValidateClickListener.onValidateClick(friendRequest);
-            }
-        });
 
         if (friendRequestItemUiModel.getUserSendId().equals(currentUserId)) {
             holder.yesBtn.setVisibility(View.INVISIBLE);
+        } else {
+            holder.yesBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onValidateClickListener.onValidateClick(friendRequest);
+                }
+            });
         }
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -113,5 +114,7 @@ public class FriendsRequestsListAdapter extends RecyclerView.Adapter<FriendsRequ
         currentUserId = currentUser;
         notifyDataSetChanged();
     }
+
+
 
 }

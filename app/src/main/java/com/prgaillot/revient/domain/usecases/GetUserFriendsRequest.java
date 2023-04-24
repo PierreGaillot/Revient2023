@@ -6,9 +6,9 @@ import com.prgaillot.revient.utils.Callback;
 
 import java.util.List;
 
-public interface GetUserFriendsRequestsSend {
+public interface GetUserFriendsRequest {
 
-    GetUserFriendsRequestsSend instance = new GetUserFriendsRequestsImpl();
+    GetUserFriendsRequest instance = new GetUserFriendsRequestsImpl();
 
-    void getUserFriendsRequestsSend(String userId, Callback<List<FriendRequest>> callback);
+    void getUserFriendsRequest(String userId, Callback<List<FriendRequest>> callback);
 }

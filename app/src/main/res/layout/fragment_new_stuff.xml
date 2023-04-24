@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    tools:context=".ui.NewStuffActivity.NewStuffActivity"
+    android:tag="newStuffFragmentTag">
+
+    <EditText
+        android:id="@+id/newStuff_editTextText_displayName"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newStuff_imageView" />
+
+    <Button
+        android:id="@+id/newStuff_loanTo_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="loan to"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newStuff_photo_btn" />
+
+    <LinearLayout
+        android:id="@+id/newStuff_borrower_LL"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newStuffFragment_fragmentBorrower_container_view">
+
+        <EditText
+            android:id="@+id/newStuff_borrowerEmail_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/friend_email_hint"
+            android:ems="10"
+            android:inputType="textEmailAddress"/>
+
+        <Button
+            android:id="@+id/newStuff_borrower_Icon"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:contentDescription="@string/search_icon_content"
+            app:icon="@drawable/baseline_search_24" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/newStuff_delay_LL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@id/newStuff_borrower_LL"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newStuff_borrower_LL">
+
+        <TextView
+            android:id="@+id/delaySelection_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="TextView" />
+
+        <SeekBar
+            android:id="@+id/delaySelection_seekBar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:max="10"
+            android:progress="3" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/newStuff_imageView"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="24dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/backgrounds/scenic"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <Button
+        android:id="@+id/newStuff_photo_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Take a picture"
+        app:icon="@drawable/baseline_add_photo_alternate_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newStuff_editTextText_displayName" />
+
+    <Button
+        android:id="@+id/newStuff_btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/validate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/newStuffFragment_fragmentBorrower_container_view"
+        android:name="com.prgaillot.revient.ui.NewStuffActivity.NewSuffFragment.BorrowerFragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newStuff_loanTo_btn"
+        tools:layout="@layout/friend_search_list_item"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

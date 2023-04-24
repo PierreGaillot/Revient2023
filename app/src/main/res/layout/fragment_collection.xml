@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.CollectionFragment.CollectionFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="@android:color/transparent">
+
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/collapsing_toolbar_layout"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="@android:color/transparent"
+        android:textSize="34sp"
+        app:titleEnabled="true"
+        android:textStyle="bold"
+        app:expandedTitleGravity="top"
+        app:expandedTitleMarginTop="?attr/actionBarSize"
+        app:expandedTitleMarginStart="32dp"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+
+
+            <TextView
+                android:id="@+id/collectionFrag_details_textView"
+                android:layout_marginTop="44dp"
+                android:layout_marginBottom="?attr/actionBarSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:text="here all details of the collection selected."
+                />
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/collectionFrag_toolbar"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin" />
+
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+</com.google.android.material.appbar.AppBarLayout>
+
+
+<androidx.fragment.app.FragmentContainerView
+android:id="@+id/collectionFrag_fragmentContent"
+android:layout_height="match_parent"
+android:layout_width="match_parent"
+android:name="com.prgaillot.revient.ui.CollectionFragment.CollectionFragmentContent.CollectionContentFragment"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"
+tools:layout="@layout/fragment_collection_content" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>

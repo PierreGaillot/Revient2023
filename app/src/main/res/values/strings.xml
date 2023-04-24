@@ -18,6 +18,7 @@
     <string name="validate">Valider</string>
     <string name="search_icon_content">the search icon</string>
     <string name="friend_name_hint">Friend Name</string>
+    <string name="friend_email_hint">my.friend@friendship.com</string>
     <string name="connection_succeed">Vous êtes connecté</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -120,6 +121,9 @@
     <string name="friendsTabDesc">the friends tabs description</string>
     <string name="error_authentication_canceled">error_authentication_canceled</string>
     <string name="error_no_internet">error_no_internet</string>
+    <string name="loanToDial">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel mauris malesuada, cursus mi non, blandit ex. Quisque dignissim, ipsum a molestie laoreet, velit neque molestie sapien, nec consequat nisi erat sit amet nunc. Morbi consequat est quis nisl dignissim, quis scelerisque elit auctor. "</string>
+    <string name="dialBtSheetLoanTo_title">Loan to ...</string>
+    <string name="action_loanTo_mail">email</string>
 
 
 </resources>

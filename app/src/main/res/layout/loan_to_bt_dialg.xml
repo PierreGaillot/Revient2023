@@ -1,51 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dialSheetBottom_margin"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="@dimen/dialSheetBottom_padding">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/dialBtSheetLoanTo_title_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginBottom="4dp"
-        android:text="@string/add_delay_title"
+        android:text="@string/dialBtSheetLoanTo_title"
         android:textColor="@android:color/primary_text_light"
         android:textSize="20sp"
         android:typeface="normal" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dialSheetBottom_margin"
         android:layout_marginEnd="@dimen/dialSheetBottom_margin"
-        android:layout_marginBottom="@dimen/dialSheetBottom_margin"
-        android:text="help [borrowerName] and add a new delay for him to bring this stuff back." />
-
-    <SeekBar
-        android:id="@+id/addDelayBtDial_seekBar"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:max="10"
-        android:progress="3" />
-
-    <TextView
-        android:id="@+id/addDelayBtDial_duration_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="add 2 days."
-        android:textSize="16sp" />
+        android:paddingBottom="@dimen/dialSheetBottom_padding"
+        android:text="@string/loanToDial" />
 
     <Button
-        android:id="@+id/addDelayBtDial_submit_btn"
+        android:id="@+id/dialBtSheetLoanTo_loanToEmail_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dialSheetBottom_margin"
-        android:text="@string/validate" />
+        android:text="@string/action_loanTo_mail" />
+
+    <Button
+        android:id="@+id/dialBtSheetLoanTo_loanToFriend_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
+
 </LinearLayout>

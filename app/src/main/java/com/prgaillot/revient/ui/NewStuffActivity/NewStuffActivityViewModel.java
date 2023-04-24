@@ -13,29 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NewStuffActivityViewModel extends ViewModel {
-
-    private final CreateStuffUseCase createStuffUseCase = CreateStuffUseCase.instance;
-    private final GetUserFriendsUseCase getUserFriendsUseCase = GetUserFriendsUseCase.instance;
     private final GetCurrentUserDataUseCase getCurrentUserDataUseCase = GetCurrentUserDataUseCase.instance;
 
-    public void createStuff(Stuff stuff, Callback<String> success){
-        createStuffUseCase.createStuff(stuff, success);
-    }
 
     public void getCurrentUser(Callback<User> callback){
         getCurrentUserDataUseCase.getCurrentUserData(callback);
     }
 
-    public void getUserFriend(String userId, Callback<List<User>> callback){
-        getUserFriendsUseCase.getUserFriends(userId, callback);
-    }
 
-    public void prepareFriendsSearchList(List<User> friends, Callback<HashMap<String, String>> callback){
-        HashMap<String, String> outputFriends = new HashMap<>();
-        for (User friend: friends) {
-            outputFriends.put( friend.getUid(), friend.getDisplayName());
-            if(friends.size() == outputFriends.size()) callback.onCallback(outputFriends);
-        }
-    }
 
 }

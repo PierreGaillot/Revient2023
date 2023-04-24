@@ -3,6 +3,7 @@ package com.prgaillot.revient.ui.FriendsActivity.FriendsRequestsListFragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.domain.models.FriendRequest;
 import com.prgaillot.revient.domain.models.User;
@@ -29,8 +31,7 @@ public class FriendsRequestsListFragment extends Fragment {
     FriendsRequestsListAdapter adapter;
 
     List<FriendRequestItemUiModel> friendRequestItemUiModelList;
-    private User currentUser = new User();
-    private OnDeleteClickListener onDeleteClickListener;
+    private final User currentUser = new User();
 
     public FriendsRequestsListFragment() {
     }
@@ -47,45 +48,9 @@ public class FriendsRequestsListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friends_requests_list, container, false);
         recyclerView = view.findViewById(R.id.fragFriendsRequestList_recyclerView);
         initList();
-
-        getUserFriendsRequests();
-
         return view;
     }
 
-    private void getUserFriendsRequests() {
-        viewModel.getUserFriendsRequestsUi(new Callback<List<FriendRequestItemUiModel>>() {
-            @Override
-            public void onCallback(List<FriendRequestItemUiModel> result) {
-                viewModel.getCurrentUser(new Callback<User>() {
-                    @Override
-                    public void onCallback(User user) {
-                        currentUser = user;
-                        refreshList(result);
-                    }
-                });
-            }
-        });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (friendRequestItemUiModelList != null) {
-            viewModel.getUserFriendsRequestsUi(new Callback<List<FriendRequestItemUiModel>>() {
-                @Override
-                public void onCallback(List<FriendRequestItemUiModel> result) {
-                    viewModel.getCurrentUser(new Callback<User>() {
-                        @Override
-                        public void onCallback(User user) {
-                            currentUser = user;
-                            refreshList(result);
-                        }
-                    });
-                }
-            });
-        }
-    }
 
     private void initList() {
         friendRequestItemUiModelList = new ArrayList<>();
@@ -96,7 +61,13 @@ public class FriendsRequestsListFragment extends Fragment {
                 viewModel.deleteFriendRequest(friendRequestId, new Callback<Void>() {
                     @Override
                     public void onCallback(Void result) {
-                        Toast.makeText(getContext(), "Friend request delete", Toast.LENGTH_SHORT).show();
+                        viewModel.refreshFriendsRequest(new Callback<Void>() {
+                            @Override
+                            public void onCallback(Void result) {
+                                refreshList();
+                                Toast.makeText(getContext(), "Friend request delete", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
             }
@@ -106,19 +77,36 @@ public class FriendsRequestsListFragment extends Fragment {
                 viewModel.validateFriendRequest(friendRequest, new Callback<Void>() {
                     @Override
                     public void onCallback(Void result) {
+                        refreshList();
                         Toast.makeText(getContext(), "Friend request Validate", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
         recyclerView.setAdapter(adapter);
-        refreshList(friendRequestItemUiModelList);
+        refreshList();
     }
 
-    private void refreshList(List<FriendRequestItemUiModel> newFriendRequestItemUiModelList) {
-        friendRequestItemUiModelList.clear();
-        friendRequestItemUiModelList.addAll(newFriendRequestItemUiModelList);
-        adapter.refreshUser(currentUser.getUid());
-        adapter.update(newFriendRequestItemUiModelList);
+
+    private void refreshList() {
+        viewModel.refreshFriendsRequest(new Callback<Void>() {
+            @Override
+            public void onCallback(Void result) {
+                viewModel.friendsRequests.observe(getViewLifecycleOwner(), new Observer<List<FriendRequest>>() {
+                    @Override
+                    public void onChanged(List<FriendRequest> friendRequestList) {
+                        viewModel.friendsRequestToUi(friendRequestList, new Callback<List<FriendRequestItemUiModel>>() {
+                            @Override
+                            public void onCallback(List<FriendRequestItemUiModel> result) {
+                                adapter.update(result);
+
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+
     }
 }

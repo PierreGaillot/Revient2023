@@ -228,4 +228,11 @@ public class MainActivity extends AppCompatActivity {
         userBundle.putSerializable("user", (Serializable) user);
         navController.navigate(R.id.action_HomeFragment_to_profileFragment, userBundle);
     }
+
+    public void openStuffCollectionFragment(String listName, List<StuffItemUiModel> itemUiModels) {
+        Bundle collectionBundle = new Bundle();
+        collectionBundle.putString("collectionNameKey", listName);
+        collectionBundle.putSerializable("collectionListKey", (Serializable) itemUiModels);
+        navController.navigate(R.id.action_HomeFragment_to_collectionFragment, collectionBundle);
+    }
 }

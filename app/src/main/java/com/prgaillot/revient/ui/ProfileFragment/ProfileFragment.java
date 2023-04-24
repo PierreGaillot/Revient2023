@@ -1,5 +1,6 @@
 package com.prgaillot.revient.ui.ProfileFragment;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -19,7 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.domain.models.User;
+import com.prgaillot.revient.ui.MainActivity.MainActivity;
+import com.prgaillot.revient.ui.NewStuffActivity.NewStuffActivity;
 import com.prgaillot.revient.utils.Callback;
+
+import java.io.Serializable;
 
 public class ProfileFragment extends Fragment {
 
@@ -29,7 +34,7 @@ public class ProfileFragment extends Fragment {
     private User user;
     TextView userDisplayNameTextView;
     ImageView userImageView;
-    Button friendActionBtn;
+    Button friendActionBtn, loanNewStuffBtn;
 
 
     public ProfileFragment() {
@@ -50,9 +55,12 @@ public class ProfileFragment extends Fragment {
             userDisplayNameTextView = view.findViewById(R.id.profilFrag_userDisplayName_textView);
             userImageView = view.findViewById(R.id.profilFrag_userprofilImg_imageView);
             friendActionBtn = view.findViewById(R.id.profilFrag_friendAction_btn);
+            loanNewStuffBtn  = view.findViewById(R.id.profilFrag_LoanNewStuff_btn);
 
             userDisplayNameTextView.setText(user.getDisplayName());
             Glide.with(getContext()).load(user.getImgUrl()).centerCrop().circleCrop().into(userImageView);
+
+            loanNewStuffBtn.setVisibility(View.GONE);
 
             viewModel.checkIsFriend(user.getUid(), new Callback<Boolean>() {
                 @Override
@@ -62,6 +70,19 @@ public class ProfileFragment extends Fragment {
                         friendActionBtn.setBackgroundColor(getContext().getColor(R.color.rv_warn));
                         friendActionBtn.setCompoundDrawables(deleteFriendIcon, null, null,null);
                         friendActionBtn.setText("remove friends");
+
+                        loanNewStuffBtn.setVisibility(View.VISIBLE);
+                        loanNewStuffBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent newStuffActIntent =new Intent(getActivity(), NewStuffActivity.class);
+                                newStuffActIntent.putExtra("userKey", (Serializable) user);
+                                startActivity(newStuffActIntent);
+                            }
+                        });
+
+
+
 
                         friendActionBtn.setOnClickListener(new View.OnClickListener() {
                             @Override

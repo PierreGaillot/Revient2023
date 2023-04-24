@@ -1,7 +1,7 @@
 
 package com.prgaillot.revient.data.usecases;
 
-import com.prgaillot.revient.domain.usecases.repository.UserRepository;
+import com.prgaillot.revient.data.repository.UserRepository;
 import com.prgaillot.revient.domain.models.User;
 import com.prgaillot.revient.domain.usecases.CreateUserUseCase;
 import com.prgaillot.revient.utils.Callback;

@@ -1,7 +1,5 @@
 package com.prgaillot.revient.domain.usecases;
 
-import android.telecom.Call;
-
 import com.prgaillot.revient.data.usecases.DeleteStuffUseCaseImpl;
 import com.prgaillot.revient.utils.Callback;
 

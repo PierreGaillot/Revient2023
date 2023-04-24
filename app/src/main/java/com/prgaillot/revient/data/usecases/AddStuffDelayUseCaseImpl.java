@@ -1,6 +1,6 @@
 package com.prgaillot.revient.data.usecases;
 
-import com.prgaillot.revient.domain.usecases.repository.StuffRepository;
+import com.prgaillot.revient.data.repository.StuffRepository;
 import com.prgaillot.revient.domain.usecases.AddStuffDelayUseCase;
 import com.prgaillot.revient.utils.Callback;
 

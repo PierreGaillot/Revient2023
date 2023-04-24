@@ -8,4 +8,10 @@
     <dimen name="userItemList_img_margin_hor">8dp</dimen>
     <dimen name="userItemLis_margin_ver">24dp</dimen>
     <dimen name="userItemLis_margin_gap">16dp</dimen>
+
+
+    <!-- Dial sheet Bottom sizes -->
+    <dimen name="dialSheetBottom_padding">16dp</dimen>
+    <dimen name="dialSheetBottom_margin">16dp</dimen>
+
 </resources>
