@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.prgaillot.revient.R;
 import com.prgaillot.revient.domain.models.User;
 import com.prgaillot.revient.ui.FriendsActivity.FriendsActivity;
@@ -33,7 +34,7 @@ public class FriendsListFragment extends Fragment {
     private static final String TAG = "FriendsListFragment";
     List<UserWithStatus> usersWithStatus;
     RecyclerView recyclerView;
-    ProgressBar loadingProgressBar;
+    LottieAnimationView loadingProgressBar;
 
     ResearchFriendsListAdapter adapter;
     FriendsListFragmentViewModel viewModel;

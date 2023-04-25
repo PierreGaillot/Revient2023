@@ -62,7 +62,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     // Storage
     implementation 'com.google.firebase:firebase-storage'
-
-
+    // Lottie
+    implementation 'com.airbnb.android:lottie:3.4.0'
 
 }

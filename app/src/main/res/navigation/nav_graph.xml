@@ -28,7 +28,9 @@
             app:destination="@id/friendsActivity" />
         <action
             android:id="@+id/action_HomeFragment_to_collectionFragment"
-            app:destination="@id/collectionFragment" />
+            app:destination="@id/collectionFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <activity
         android:id="@+id/newStuffActivity"
